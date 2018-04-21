@@ -1,5 +1,62 @@
 import turtle
 import math
+
+valid = False
+while not valid:
+    print("""Choose a speed:
+    1. For testing purposes only (90)
+    2. Low quality (180)
+    3. Meh quality (360)
+    4. Good quality (720)
+    5. Will be done by tomorrow, I think (1080)""")
+    choice = input("Your choice: ")
+    try:
+        choice = int(choice)
+        if 0 < choice < 6:
+            valid = True
+        else:
+            print("That isn't an opition lol...")
+    except ValueError:
+        print("Thats not a valid choice you monkey...")
+
+if choice == 1:
+    time = 90
+elif choice == 2:
+    time = 180
+elif choice == 3:
+    time = 360
+elif choice == 4:
+    time = 720
+elif choice == 5:
+    time = 1080
+
+valid = False
+while not valid:
+    print("""Choose a speed:
+    1. Mica sized lol (0.6)
+    2. Laptop size (0.8)
+    3. Normal size (1)
+    4. The bigger, blacker version (1.2)""")
+    choice = input("Your choice: ")
+    try:
+        choice = int(choice)
+        if 0 < choice < 5:
+            valid = True
+        else:
+            print("That isn't even an opition...")
+    except ValueError:
+        print("Thats not a valid choice you gremlin...")
+
+if choice == 1:
+    size = 0.6
+elif choice == 2:
+    size = 0.8
+elif choice == 3:
+    size = 1
+elif choice == 4:
+    size = 1.2
+
+wn = turtle.Screen()
 pen = turtle.Turtle()
 pencil = turtle.Turtle()
 pen.penup()
@@ -77,7 +134,7 @@ def a(size,pos,color,pensize):
     pen.pendown()
     for i in range(180):
         rads = i/90*math.pi
-        pen.forward((size*(math.sin(rads)**2)**0.5+size*0.4)/(size*0.4+90))
+        pen.forward((size*(math.sin(rads)**2)**0.5+size*0.4)/(115))
         pen.right(2)
 
 def B(size,pos,color,pensize):
@@ -197,28 +254,29 @@ def y(size,pos,color,pensize):
         pen.forward(size*0.0105)
         pen.right(2)
 
-Pattern("broad",[-20,40],250,1,["#0060ff","#dbd1b4","#3fe0d0"],0.25,900)
-Pattern("narrow",[380,290],65,1,["green","green","green"],6,720,3)
-Pattern("narrow",[-400,360],65,1,["green","green","green"],6,720,3)
-Flower([380,290],50,1,["#3fe0d0","#7fffd4","white"],2.17,32,720,"narrow",5,[30,30])
-Flower([-420,-210],50,1,["yellow","orange","red"],2.17,32,720,"narrow",5,[30,30])
-Flower([360,-280],50,1,["magenta","#ff0024","darkred"],2.17,32,720,"broad",5,[30,30])
-Flower([-400,360],50,1,["#7fffd4","lightblue","white"],2.17,32,720,"broad",5,[30,30])
+Pattern("broad",[-20*size,40*size],250*size,1,["#0060ff","#dbd1b4","#3fe0d0"],0.25,1.5*time)
+Pattern("narrow",[380*size,290*size],65*size,1,["green","green","green"],6,time,3)
+Pattern("narrow",[-400*size,360*size],65*size,1,["green","green","green"],6,time,3)
+Flower([380*size,290*size],50*size,1,["#3fe0d0","#7fffd4","white"],2.17,32,time,"narrow",5,[30,30])
+Flower([-420*size,-210*size],50*size,1,["yellow","orange","red"],2.17,32,time,"narrow",5,[30,30])
+Flower([360*size,-280*size],50*size,1,["magenta","#ff0024","darkred"],2.17,32,time,"broad",5,[30,30])
+Flower([-400*size,360*size],50*size,1,["#7fffd4","lightblue","white"],2.17,32,time,"broad",5,[30,30])
+a(70*size,[-100*size,120*size],"#7fffd4",5)
+a(70*size,[80*size,0],"#7fffd4",5)
+a(70*size,[20*size,-100*size],"#7fffd4",5)
+B(70*size,[-200*size,0],"#7fffd4",5)
+c(70*size,[0,-100*size],"#7fffd4",5)
+d(70*size,[20*size,0],"#7fffd4",5)
+H(70*size,[-150*size,120*size],"#7fffd4",5)
+h(70*size,[-40*size,0],"#7fffd4",5)
+i(70*size,[-150*size,0],"#7fffd4",5,"turtle")
+i(70*size,[-50*size,-100*size],"#7fffd4",5,"turtle")
+M(70*size,[-150*size,-100*size],"#7fffd4",5)
+p(70*size,[-50*size,120*size],"#7fffd4",5)
+p(70*size,[10*size,120*size],"#7fffd4",5)
+r(70*size,[-130*size,0],"#7fffd4",5)
+t(70*size,[-100*size,0],"#7fffd4",5)
+y(70*size,[70*size,120*size],"#7fffd4",5)
+y(70*size,[130*size,0],"#7fffd4",5)
 
-a(70,[-100,120],"#7fffd4",5)
-a(70,[80,0],"#7fffd4",5)
-a(70,[20,-100],"#7fffd4",5)
-B(70,[-200,0],"#7fffd4",5)
-c(70,[0,-100],"#7fffd4",5)
-d(70,[20,0],"#7fffd4",5)
-H(70,[-150,120],"#7fffd4",5)
-h(70,[-40,0],"#7fffd4",5)
-i(70,[-150,0],"#7fffd4",5,"turtle")
-i(70,[-50,-100],"#7fffd4",5,"turtle")
-M(70,[-150,-100],"#7fffd4",5)
-p(70,[-50,120],"#7fffd4",5)
-p(70,[10,120],"#7fffd4",5)
-r(70,[-130,0],"#7fffd4",5)
-t(70,[-100,0],"#7fffd4",5)
-y(70,[70,120],"#7fffd4",5)
-y(70,[130,0],"#7fffd4",5)
+wn.mainloop()
