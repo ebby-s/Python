@@ -33,7 +33,7 @@ elif choice == 5:
 valid = False
 while not valid:
     print("""Choose a speed:
-    1. Mica sized lol (0.6)
+    1. Tiny sized (0.6)
     2. Laptop size (0.8)
     3. Normal size (1)
     4. The bigger, blacker version (1.2)""")
