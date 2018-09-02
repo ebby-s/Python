@@ -1,0 +1,4 @@
+% Use '%' symbol for comments
+% Degree symbol --> °
+%
+% Part 1

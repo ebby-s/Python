@@ -1,0 +1,6 @@
+% Use '%' symbol for comments
+% Degree symbol --> °
+%
+% Part 1
+hex-2-ene;butan-2-ol;H2, Ni, 140°C;Al2O3 +heat;H3PO4 +H2O +heat
+butan-2-ol;3-hydroxy, 3-methyl butanenitrile;K2Cr2O7(aq);KCN, HCN

@@ -1,0 +1,8 @@
+% This file allows you to change settings.
+% You can choose game mode from: random, random_all, all_questions, repeat_<number>
+%File 1:
+Easy;Answer with one process;easy questions.txt;random
+%File 2:
+Medium;Answer with multiple processes;med questions.txt;random
+%File 3:
+Hard;Good luck;hard questions.txt;random

@@ -1,0 +1,14 @@
+% Use '%' symbol for comments
+% Degree symbol --> °
+%
+% Part 1
+hex-2-ene;hexane;H2, Ni, 140°C
+hexane;but-1-ene;Al2O3 +heat
+but-1-ene;butan-2-ol;H3PO4 +H2O +heat
+hex-2-ene;3-bromo hexane;HBr
+%
+% Part 2
+butan-2-ol;butanone;K2Cr2O7(aq)
+butanone;butan-2-ol;NaBH4
+butanone;3-hydroxy, 3-methyl butanenitrile;KCN, HCN
+2-bromo butane;but-2-ene;NaOH(ethanol) +heat
