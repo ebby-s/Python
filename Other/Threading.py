@@ -61,7 +61,6 @@ class Window:
             for button in self.ans_buttons:
                 pygame.draw.rect(self.screen, (0,36,255), button)
             pygame.display.flip()
-        self.close()
 
 test = Window()
 test.activate()

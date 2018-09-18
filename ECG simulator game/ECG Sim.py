@@ -1,11 +1,15 @@
 import pygame
+import time
 
 pygame.init()
 bgcolor = (147,166,180)
 button_color = (255,255,255)
 hover_color = (216,216,216)
 press_color = (192,192,192)
+logo = pygame.image.load("ciswhitemalehort.png")
+pattern = pygame.image.load("line.png")
 title_font = pygame.font.SysFont('Courier', 40)
+small_font = pygame.font.SysFont('Courier',18)
 main_font = pygame.font.SysFont('Courier',18,True)
 pygame.mouse.set_cursor(*pygame.cursors.diamond)
 screen = pygame.display.set_mode((1344,756))
@@ -14,14 +18,19 @@ pygame.display.set_caption("ECG Sim")
 # Displays main menu
 def main_menu():
     screen.fill(bgcolor)
-    start_button = pygame.rect.Rect(592, 185, 160, 80)
-    inst_button = pygame.rect.Rect(527, 315, 300, 80)
-    pygame.draw.rect(screen, button_color, start_button)
-    pygame.draw.rect(screen, button_color, inst_button)
-    texts = []
-    for text in ["ECG Sim","Start","Instrucions"]:
-        texts.append(title_font.render(text,True,(0,0,0)))
     
+    screen.blit(pattern, (0, 350))
+    screen.blit(pattern, (519, 350))
+    screen.blit(pattern, (824, 350))
+    screen.blit(logo, (519, 120))
+    start_button = pygame.rect.Rect(592, 565, 160, 80)
+    pygame.draw.rect(screen, button_color, start_button)
+    credits_button = pygame.rect.Rect(612, 675, 120, 60)
+    pygame.draw.rect(screen, button_color, credits_button)
+    texts = []
+    for text in ["ECG Sim","Start"]:
+        texts.append(title_font.render(text,True,(0,0,0)))
+    texts.append(small_font.render("Credits",True,(0,0,0)))
     while True:
         ev = pygame.event.poll()
         if ev.type == pygame.QUIT:
@@ -30,42 +39,37 @@ def main_menu():
             if ev.button == 1:
                 if start_button.collidepoint(ev.pos):
                     click_button(start_button)
-                    diff_select()
+                    level_select()
                     break
-                elif inst_button.collidepoint(ev.pos):
-                    click_button(inst_button)
-                    inst_page()
+                elif credits_button.collidepoint(ev.pos):
+                    click_button(credits_button)
+                    credits_page()
                     break
-        for button in [start_button,inst_button]:
+        for button in [start_button,credits_button]:
             if button.collidepoint(pygame.mouse.get_pos()):
                 pygame.draw.rect(screen, hover_color, button)
             else:
                 pygame.draw.rect(screen, button_color, button)
-        for i,pos in enumerate([(588,50),(607,200),(542,330)]):
+        for i,pos in enumerate([(588,50),(607,580),(634,695)]):
             screen.blit(texts[i],pos)
         pygame.display.flip()
     pygame.quit()
 
-# Displays instruction page
-def inst_page():
+# Displays credits page
+def credits_page():
     screen.fill(bgcolor)
-    inst_part1 = "The input is displayed on the left, drag processes onto the screen so that"
-    inst_part2 = "it is converted to the output displayed on the right."
-    inst_text = inst_part1+' '+inst_part2
+    offset = 0
+    credits_texts = []
+    for text in ["Programming: ","Design: ","Everything else: "]:
+        credits_texts.append(small_font.render(text,True,(0,0,0)))
+    for text in credits_texts:
+        screen.blit(text,(50,120+offset))
+        offset += small_font.get_height() + 50
     
     menu_button = pygame.rect.Rect(30,50,60,40)
-    start_button = pygame.rect.Rect(592, 615, 160, 80)
-    pygame.draw.rect(screen, (255,0,36), menu_button)
-    pygame.draw.rect(screen, (255,0,36), start_button)
-    lines = split_text(inst_text,1300,main_font)
-    offset = 0
-    for line in lines:
-        inst_text = main_font.render(line,True,(0,0,0))
-        screen.blit(inst_text,(50,120+offset))
-        offset += main_font.get_height()
-
+    
     texts = []
-    for text,font in [["Instructions",title_font],["Start",title_font],["Menu",main_font]]:
+    for text,font in [["Instructions",title_font],["Menu",main_font]]:
         texts.append(font.render(text,True,(0,0,0)))    
 
     while True:
@@ -78,33 +82,29 @@ def inst_page():
                     click_button(menu_button)
                     main_menu()
                     break
-                elif start_button.collidepoint(ev.pos):
-                    click_button(start_button)
-                    diff_select()
-                    break
-        for button in [start_button,menu_button]:
+        for button in [menu_button]:
             if button.collidepoint(pygame.mouse.get_pos()):
-                pygame.draw.rect(screen, (208,0,36), button)
+                pygame.draw.rect(screen, hover_color, button)
             else:
-                pygame.draw.rect(screen, (255,0,36), button)
-        for i,pos in enumerate([(120,50),(607,630),(40,60)]):
+                pygame.draw.rect(screen, button_color, button)
+        for i,pos in enumerate([(120,50),(40,60)]):
             screen.blit(texts[i],pos)
         pygame.display.flip()
     pygame.quit()
 
-# Allows player to select dificulty and starts game controller
-def diff_select():
+# Allows player to select a level and starts game controller
+def level_select():
     screen.fill(bgcolor)
     title_text = title_font.render("Level Select",True,(0,0,0))
     screen.blit(title_text,(120,50))
     menu_button = pygame.rect.Rect(30,50,60,40)
     menu_text = main_font.render("Menu",True,(0,0,0))
-    pygame.draw.rect(screen, (255,0,36), menu_button)
-    buttons,button_texts = make_labled_buttons([[220, 165, 800, 120],[220, 355, 800, 120],[220, 545, 800, 120]],[levels[x]+' - '+level_descriptions[x] for x in range(3)],title_font)
+    pygame.draw.rect(screen, button_color, menu_button)
+    level_buttons,button_texts = make_labled_buttons([[100, 165+110*x, 300, 80] for x in range(5)] ,["Level "+str(x)+' - '+"Level description." for x in range(5)],main_font)
     start = False
     
     while True:
-        button_colors = [(255,0,36) for x in range(len(buttons))]
+        button_colors = [button_color for x in range(len(level_buttons))]
         ev = pygame.event.poll()
         if ev.type == pygame.QUIT:
             break
@@ -114,57 +114,31 @@ def diff_select():
                     click_button(menu_button)
                     main_menu()
                     break
-                elif buttons[0].collidepoint(ev.pos):
-                    start = True
-                    diff = 0
-                elif buttons[1].collidepoint(ev.pos):
-                    start = True
-                    diff = 1
-                elif buttons[2].collidepoint(ev.pos):
-                    start = True
-                    diff = 2
+                for button in level_buttons:
+                    if button.collidepoint(ev.pos):
+                        start = True
+                        level = level_buttons.index(button)
                 if start:
-                    click_button(buttons[diff])
-                    main_control(diff)
+                    click_button(level_buttons[level])
+                    main_control(level)
                     break
-        for i,button in enumerate(buttons):
+        for i,button in enumerate(level_buttons):
             if button.collidepoint(pygame.mouse.get_pos()):
-                button_colors[i] = (208,0,36)
+                button_colors[i] = hover_color
         if menu_button.collidepoint(pygame.mouse.get_pos()):
-            pygame.draw.rect(screen, (208,0,36), menu_button)
+            pygame.draw.rect(screen, hover_color, menu_button)
         else:
-            pygame.draw.rect(screen, (255,0,36), menu_button)
-        print_labled_buttons(buttons,button_texts,button_colors,[15,15])
+            pygame.draw.rect(screen, button_color, menu_button)
+        print_labled_buttons(level_buttons,button_texts,button_colors,[15,15])
         screen.blit(menu_text,(40,60))
         pygame.display.flip()
     pygame.quit()
 
-# Opens a screen that warns the user when something goes wrong
-def warning_screen(text):
-    screen = pygame.display.set_mode((400,225))
-    screen.fill(bgcolor)
-    lines = split_text(text,360,main_font)
-    offset = 0
-    for line in lines:
-        warning_text = main_font.render(line,True,(0,0,0))
-        screen.blit(warning_text,(20,20+offset))
-        offset += main_font.get_height()
-    while True:
-        ev = pygame.event.poll()
-        if ev.type == pygame.QUIT:
-            break
-        pygame.display.flip()
-    pygame.quit()
-
 # Game controller
-def main_control(diff):
-    score.reset()
+def main_control(level):
     stop = False
     while not stop:
-        question = generate(diff)
-        if question == False:
-            warning_screen('The file "'+level_files[diff]+'" either cannot be found or is empty, please make sure that it exists, is in the same directory and has content.')
-            break
+        question = generate(level)
         stop = game(question)
 
 # Creates buttons, a button is a rectangle and text together
@@ -221,85 +195,6 @@ def split_text(text,max_length,font):
         lines.append(line)
     return lines
 
-# One round of the game
-def game(question):
-    drag = [False,0]
-    buttons,button_texts = make_labled_buttons([[50,300,160,100],[1130,300,160,100],[30,50,60,40],[50,630,80,40],[1216,630,80,40]],[question[0],question[1],'Menu','Reset','Submit'])
-    ans_buttons,ans_texts = make_labled_buttons([190,390,590,790,990],question[-1],main_font,True)
-    ans_colors = [(0,102,255) for x in range(5)]
-    
-    while True:
-        ev = pygame.event.poll()
-        if ev.type == pygame.QUIT:
-            break
-        elif ev.type == pygame.MOUSEBUTTONDOWN:
-            if ev.button == 1:
-                
-                for i,button in enumerate(buttons):
-                    if button.collidepoint(ev.pos):
-                        if i == 2:
-                            click_button(button)
-                            main_menu()
-                            return True
-                        elif i == 3:
-                            click_button(button)
-                            for i,x in enumerate([190,390,590,790,990]):
-                                ans_buttons[i].x = x
-                                ans_buttons[i].y = 600
-                        elif i == 4:
-                            click_button(button)
-                            ans = []
-                            for i,button in enumerate(ans_buttons):
-                                if button.y < 470:
-                                    ans.append([i,button.x])
-                            if not correct(question[2],question[3],ans):
-                                view_ans_text = main_font.render(' -> '.join(question[2]),True,(0,0,0))
-                                unpause_text = main_font.render('--Click anywhere to continue--',True,(0,0,0))
-                                screen.blit(view_ans_text,(672-main_font.size(' -> '.join(question[2]))[0]*0.5,175))
-                                screen.blit(unpause_text,(507,125))
-                                pygame.display.flip()
-                                while True:
-                                    ev = pygame.event.poll()
-                                    if ev.type == pygame.QUIT:
-                                        pygame.quit()
-                                        return True
-                                    elif ev.type == pygame.MOUSEBUTTONDOWN:
-                                        break
-                            return False
-                for i,button in enumerate(ans_buttons):
-                    if button.collidepoint(ev.pos):
-                        ans_colors[i] = (236,236,0)
-                        drag = [True,i]
-                        mouse_x, mouse_y = ev.pos
-                        offset_x = button.x - mouse_x
-                        offset_y = button.y - mouse_y
-        elif ev.type == pygame.MOUSEBUTTONUP:
-            if ev.button == 1:            
-                drag[0] = False
-        elif ev.type == pygame.MOUSEMOTION:
-            if drag[0]:
-                mouse_x, mouse_y = ev.pos
-                if 220 < mouse_x + offset_x < 960:
-                    ans_buttons[drag[1]].x = mouse_x + offset_x
-                if 200 < mouse_y + offset_y < 650:
-                    ans_buttons[drag[1]].y = mouse_y + offset_y
-
-        for i,button in enumerate(ans_buttons):
-            if not drag[0]:
-                if button.y < 470:
-                    ans_colors[i] = (236,0,55)
-                elif button.y >= 470:
-                    ans_colors[i] = (0,102,255)
-        screen.fill(bgcolor)
-        screen.fill((255,0,36),(0,550,1344,20))
-        print_labled_buttons(buttons,button_texts,(255,0,36),[10,10])
-        print_labled_buttons(ans_buttons,ans_texts,ans_colors,[10,10])
-        score_text = title_font.render("Score: "+score.show_score()+"   W/L Ratio: "+score.win_loss_ratio(),True,(0,0,0))
-        screen.blit(score_text,(120,50))
-        pygame.display.flip()
-    pygame.quit()
-    return True
-
 # Generates questions from contents of questions file
 def generate(diff):
     try:
@@ -322,71 +217,6 @@ def generate(diff):
 
         random.shuffle(ps)
     return [i[val],o[val],p[val],ps]
-
-# Corrects the answer entered by the player and changes the score
-def correct(correct_ans,ans_order,ans):
-    ans = sort(ans)
-    correct_numbers = []
-    for p in correct_ans:
-        correct_numbers.append(ans_order.index(p))
-    ans_list = []
-    for a in ans:
-        ans_list.append(a[0])
-    if correct_numbers == ans_list:
-        score.win()
-        return True
-    else:
-        score.loss()
-        return False
-
-# Just a bubble sort
-def sort(things):
-    done = False
-    while not done:
-        done = True
-        for i in range(len(things)-1):
-            if things[i][1] > things[i+1][1]:
-                done = False
-                j = things[i]
-                things[i] = things[i+1]
-                things[i+1] = j
-    return things
-
-# Loads contents of a file
-def load_text(filename,questions=False):
-    if questions:
-        inputs = []
-        outputs = []
-        processes = []
-        all_processes = []
-    else:
-        levels = []
-    file = open(filename,'r')
-    lines = file.readlines()
-    for line in lines:
-        if "%" in line:
-            continue
-        if '\n' in line:
-            line = line[:-1]
-        line = line.split(';')
-        if questions:
-            inputs.append(line[0])
-            outputs.append(line[1])
-            processes.append(line[2:])
-        else:
-            for i,part in enumerate(line):
-                try:
-                    levels[i].append(part)
-                except:
-                    levels.append([])
-                    levels[i].append(part)
-    if not questions:
-        return levels
-    for i in processes:
-        for process in i:
-            if process not in all_processes:
-                all_processes.append(process)
-    return [inputs,outputs,processes,all_processes]
 
 def click_button(button):
     pygame.draw.rect(screen, press_color, button)
