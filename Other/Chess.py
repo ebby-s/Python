@@ -2,7 +2,7 @@ class board:
 
     def __init__(self):
         '''A chess board'''
-        self.convert = {0:"empty",1:"infantryman",2:"elephant",3:"horse",4:"camel",5:"minister",6:"king"}
+        self.convert = {0:"empty",1:"pawn",2:"castle",3:"knight",4:"bishop",5:"queen",6:"king"}
         self.cols = [[] for x in range(8)]
         for i in range(8):
             self.cols[i] = [piece(0) for x in range(8)]
@@ -68,29 +68,30 @@ class piece:
         return self.type*other.type
 
     def move(self,current,target):
-        if self.type == 1:
+        movement = [target[0]-current[0],target[1]-current[1]]
+        if abs(self.type) == 1:
+            print("pawn")
             if current[1] in [1,6]:
+                print("pawn first")
                 if current[0] == target[0] and self.type*(target[1] - current[1]) in [1,2]:
                     return True
             else:
                 if current[0] == target[0] and self.type*(target[1] - current[1]) == 1:
                     return True
-        if self.type == 2:
+        if abs(self.type) == 2:
             if current[0] == target[0] or current[1] == target[1]:
                 return True
-        if self.type == 3:
-            "idk rn lol"
-        if self.type == 4:
-            movement = [target[0]-current[0],target[1]-current[1]]
-            if movement[1]/movement[0] == 1:
+        if abs(self.type) == 3 and movement[0] != 0:
+            if abs(movement[1]/movement[0]) == 1:
                 return True
-        if self.type == 5:
-            movement = [target[0]-current[0],target[1]-current[1]]
+        if abs(self.type) == 4:
+            "idk rn lol"
+        if abs(self.type) == 5:
             if current[0] == target[0] or current[1] == target[1] or movement[1]/movement[0] == 1:
                 return True
-        if self.type == 6:
+        if abs(self.type) == 6:
             "later"
-        return False
+        return False 
 
 test_board = board()
 while True:
@@ -106,5 +107,3 @@ while True:
         except:
             print("Invalid input")
     print(test_board.move_piece(c_piece,target))
-    
-
