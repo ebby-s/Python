@@ -100,7 +100,11 @@ def level_select():
     menu_button = pygame.rect.Rect(30,50,60,40)
     menu_text = main_font.render("Menu",True,(0,0,0))
     pygame.draw.rect(screen, button_color, menu_button)
-    level_buttons,button_texts = make_labled_buttons([[100, 165+110*x, 300, 80] for x in range(5)] ,["Level "+str(x)+' - '+"Level description." for x in range(5)],main_font)
+    level_buttons,button_texts = make_labled_buttons([[100, 165+110*x, 315, 80] for x in range(0,5)] ,["Level "+str(x)+' - '+"Level description." for x in range(0,5)],main_font)
+    mid_buttons,mid_texts = make_labled_buttons([[515, 165+110*(x%5), 315, 80] for x in range(5,10,1)] ,["Level "+str(x)+' - '+"Level description." for x in range(5,10,1)],main_font)
+    right_buttons,right_texts = make_labled_buttons([[930, 165+110*(x%5), 315, 80] for x in range(10,15,1)] ,["Level "+str(x)+' - '+"Level description." for x in range(10,15,1)],main_font)    
+    level_buttons += mid_buttons + right_buttons
+    button_texts += mid_texts + right_texts
     start = False
     
     while True:
