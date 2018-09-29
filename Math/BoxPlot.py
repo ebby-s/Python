@@ -22,9 +22,9 @@ def calc_outliers():
     outrange = 1.5*(Q3-Q1)
     lowout = Q1-outrange
     upout = Q3+outrange
-    outnum = int(input("How many outliers would you like to enter? "))
+    outnum = int(input("How many outliers would you like to enter?(Not ready): "))
     for i in range(0,outnum,1):
-        temp = int(input("Enter outlier:"))
+        temp = int(input("Enter outlier(Not ready): "))
         outliers.append(temp)
 
 def prep_data():

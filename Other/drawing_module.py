@@ -33,10 +33,10 @@ elif choice == 5:
 valid = False
 while not valid:
     print("""Choose a speed:
-    1. Tiny sized (0.6)
-    2. Laptop size (0.8)
-    3. Normal size (1)
-    4. The bigger, blacker version (1.2)""")
+    1. Tiny (0.6)
+    2. Small (0.8)
+    3. Normal (1)
+    4. Large (1.2)""")
     choice = input("Your choice: ")
     try:
         choice = int(choice)

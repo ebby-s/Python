@@ -28,7 +28,7 @@ print("""
   H  A text based game |___/   By Ebby              H /
   HHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH/
 
-  Copyright © SpaceYee Inc. 1987
+  Copyright © SpaceYee Inc. 1987 (Not really)
   
 """)
 

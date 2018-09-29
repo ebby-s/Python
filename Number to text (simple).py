@@ -12,6 +12,9 @@ if len(number) == 1:
 elif len(number) == 2:
     text = Num2Text(number[0],digit2)
     text += " " + Num2Text(number[1],digit1)
+else:
+    print("Only 2 digit numbers")
+
 if int(number[0]) == 1:
     text = Num2Text(number[1],teens)
     

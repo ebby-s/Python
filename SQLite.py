@@ -93,11 +93,12 @@ update_cpu()
 - update specs of a cpu
 '''
 
-# Some code that doesn't work yet:
-"""
+# Main menu, exception handling not fully implemented yet
+
 loop = True
 while loop==True:
     choice=int(input('''
+--------------------------------------
 This is the menu, Choose a number:
 1. Create Table
 2. Add existing values
@@ -111,13 +112,22 @@ This is the menu, Choose a number:
 
 : '''))
     if choice == 1:
-        create_cpu()
+        try:
+            create_cpu()
+        except sqlite3.OperationalError:
+            print("The table already exists.")
     elif choice == 2:
-        add_cpus()
+        try:
+            add_cpus()
+        except sqlite3.IntegrityError:
+            print("Values already in table.")
     elif choice == 3:
         print_cpu()
     elif choice == 4:
-        print_row()
+        try:
+            print_row()
+        except TypeError:
+            print("That is an invalid SKU.")
     elif choice == 5:
         search_cores()
     elif choice == 6:
@@ -127,4 +137,4 @@ This is the menu, Choose a number:
     elif choice == 8:
         update_cpu()
 
-"""
+

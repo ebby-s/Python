@@ -6,7 +6,7 @@ pen = turtle.Turtle()
 pencil = turtle.Turtle()
 pencil.penup()
 
-#CHANGE FOR DEBUG:
+#FOR DEBUG:
 pen.hideturtle()
 pencil.hideturtle()
 pencil.speed(100)
@@ -157,7 +157,6 @@ def DrawBranch(height,width,ratio,level):
 
 
 #OLDER ORNAMENTS FUNCTION:
-
 def DrawOrnaments(height,width,branches,angle):
     global total1
     total1 = 0
@@ -186,10 +185,11 @@ def DrawOrnaments(height,width,branches,angle):
     pencil.setposition(0,0)
     pencil.left(90)
 
-MasterMind(height,width,branches,7/10)
+if __name__ == "__main__":
+    MasterMind(height,width,branches,7/10)
 
-#FOR OLDER ORNAMENTS FUNCTION:
-DrawOrnaments(height,width,branches,90)
-DrawOrnaments(height,width,branches,270)
+    #FOR OLDER ORNAMENTS FUNCTION:
+    DrawOrnaments(height,width,branches,90)
+    DrawOrnaments(height,width,branches,270)
 
 
