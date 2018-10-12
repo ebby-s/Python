@@ -21,11 +21,6 @@ class table:
         
         self.data.append(record)
 
-    def find_record(self,target_key):
-        for record in self.data:
-            if record[0] == target_key:
-                return record
-
     def remove_record(self,target_key):
         for i,record in enumerate(self.data):
             if record[0] == target_key:
@@ -40,23 +35,29 @@ class table:
             try:
                 if self.types[condition[0]] == type(0):
                     condition[2] = int(condition[2])
-                else:
+                elif self.types[condition[0]] == type(0.0):
                     condition[2] = float(condition[2])
             except:
                 if condition[1] != self.operators["=="]:
                     continue
             conditions.append(condition)
         
-        output = []
+        output = self.data.copy()
         for condition in conditions:
             for i,record in enumerate(self.data):
-                if condition[1](record[condition[0]],condition[2]):
-                    output.append(record)
+                if not condition[1](record[condition[0]],condition[2]):
+                    if record in output:
+                        output.remove(record)
         return output
 
-test = table([["name",type("a")],["age",type(0)],["height",type(0.0)]])
-test.add_record(["Ebby",17,1.5])
-test.add_record(["Sahil",17,1.6])
-test.add_record(["Edmund",19,2.5])
-test.add_record(["Jeff",21,3.5])
-print(test.search(["name == Sahil","age > 17"]))
+test = table([["name",type("a")],["cores",type(0)],["threads",type(0)],["frequency",type(0.0)]])
+test.add_record(['1200',4,4,3.1])
+test.add_record(['1300X',4,4,3.4])
+test.add_record(['1400',4,8,3.2])
+test.add_record(['1500X',4,8,3.5])
+test.add_record(['1600',6,12,3.2])
+test.add_record(['1600X',6,12,3.6])
+test.add_record(['1700',8,16,3.0])
+test.add_record(['1700X',8,16,3.4])
+test.add_record(['1800X',8,16,3.6])
+print(test.search(["cores > 4","frequency > 3.0"]))

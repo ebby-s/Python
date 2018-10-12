@@ -49,7 +49,7 @@ class board:
         elif self.cols[target[0]][target[1]]*self.cols[c_piece[0]][c_piece[1]] > 0:
             return 'target is not empty'
 
-        if self.cols[c_piece[0]][c_piece[1]].move(c_piece,target):
+        if self.cols[c_piece[0]][c_piece[1]].move(c_piece,target,self.cols):
             self.cols[target[0]][target[1]] = self.cols[c_piece[0]][c_piece[1]]
             self.cols[c_piece[0]][c_piece[1]] = piece(0)
         else:
@@ -67,31 +67,48 @@ class piece:
     def __mul__(self,other):
         return self.type*other.type
 
-    def move(self,current,target):
+    def move(self,current,target,board):
         movement = [target[0]-current[0],target[1]-current[1]]
+        if abs(self.type) in [3,6] and not self.clear_path(current,movement,board):
+            return False
+        
         if abs(self.type) == 1:
-            print("pawn")
-            if current[1] in [1,6]:
-                print("pawn first")
-                if current[0] == target[0] and self.type*(target[1] - current[1]) in [1,2]:
+            if self.type*movement[1] > 0 and abs(movement[0]) == 1 and abs(movement[1]) == 1 and board[target[1]][target[0]].type*self.type < 0:
+                return True
+            elif current[1] in [1,6]:
+                if movement[0] == 0 and self.type*movement[1] in [1,2]:
                     return True
             else:
-                if current[0] == target[0] and self.type*(target[1] - current[1]) == 1:
+                if movement[0] == 0 and self.type*movement[1] == 1:
                     return True
         if abs(self.type) == 2:
-            if current[0] == target[0] or current[1] == target[1]:
+            if movement[0] == 0 or movement[1] == 0:
                 return True
-        if abs(self.type) == 3 and movement[0] != 0:
+        if abs(self.type) == 3:
+            "move a horse"
+            return True
+        if abs(self.type) == 4 and movement[0] != 0:
             if abs(movement[1]/movement[0]) == 1:
                 return True
-        if abs(self.type) == 4:
-            "idk rn lol"
         if abs(self.type) == 5:
-            if current[0] == target[0] or current[1] == target[1] or movement[1]/movement[0] == 1:
+            if movement[0] == 0 or movement[1] == 0 or movement[1]/movement[0] == 1:
                 return True
         if abs(self.type) == 6:
-            "later"
+            if movement[0] in [-1,0,1] and movement[1] in [-1,0,1]:
+                return True
         return False 
+
+    def clear_path(self,location,movement,board):
+        if movement[0] == 0:
+            for y in range(movement[1]):
+                if board[location[0],location[1]+1+y].type*self.type == 1:
+                    return False
+        elif movement[1] == 0:
+            for x in range(movement[0]):
+                if board[location[0]+1+x,location[1]].type*self.type == 1:
+                    return False
+        
+        return True
 
 test_board = board()
 while True:
