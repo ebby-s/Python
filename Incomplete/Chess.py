@@ -85,8 +85,8 @@ class piece:
             if movement[0] == 0 or movement[1] == 0:
                 return True
         if abs(self.type) == 3:
-            "move a horse"
-            return True
+            if (abs(movement[0]) == 2 and abs(movement[1]) == 3) or (abs(movement[0]) == 3 and abs(movement[1]) == 2):
+                return True
         if abs(self.type) == 4 and movement[0] != 0:
             if abs(movement[1]/movement[0]) == 1:
                 return True
