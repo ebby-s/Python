@@ -1,6 +1,6 @@
 import turtle
 import math
-
+'''
 valid = False
 while not valid:
     print("""Choose a speed:
@@ -55,7 +55,7 @@ elif choice == 3:
     size = 1
 elif choice == 4:
     size = 1.2
-
+'''
 wn = turtle.Screen()
 pen = turtle.Turtle()
 pencil = turtle.Turtle()
@@ -63,8 +63,8 @@ pen.penup()
 pencil.penup()
 pen.ht()
 pencil.ht()
-pen.speed(100)
-pencil.speed(100)
+pen.speed(0)
+pencil.speed(0)
 turtle.bgcolor("#0060ff")
 
 def Flower(pos,size,thickness,colors,control=2.2,shape=32,density=720,shape2="narrow",number=5,angles=[30,30]):
@@ -254,6 +254,9 @@ def y(size,pos,color,pensize):
         pen.forward(size*0.0105)
         pen.right(2)
 
+Pattern("narrow",[0,0],200,1,["#0060ff","#dbd1b4","#3fe0d0"],3,90,5,[30,30],[1,0.2,0.5],1)
+
+'''
 Pattern("broad",[-20*size,40*size],250*size,1,["#0060ff","#dbd1b4","#3fe0d0"],0.25,1.5*time)
 Pattern("narrow",[380*size,290*size],65*size,1,["green","green","green"],6,time,3)
 Pattern("narrow",[-400*size,360*size],65*size,1,["green","green","green"],6,time,3)
@@ -263,20 +266,16 @@ Flower([360*size,-280*size],50*size,1,["magenta","#ff0024","darkred"],2.17,32,ti
 Flower([-400*size,360*size],50*size,1,["#7fffd4","lightblue","white"],2.17,32,time,"broad",5,[30,30])
 a(70*size,[-100*size,120*size],"#7fffd4",5)
 a(70*size,[80*size,0],"#7fffd4",5)
-a(70*size,[20*size,-100*size],"#7fffd4",5)
 B(70*size,[-200*size,0],"#7fffd4",5)
-c(70*size,[0,-100*size],"#7fffd4",5)
 d(70*size,[20*size,0],"#7fffd4",5)
 H(70*size,[-150*size,120*size],"#7fffd4",5)
 h(70*size,[-40*size,0],"#7fffd4",5)
 i(70*size,[-150*size,0],"#7fffd4",5,"turtle")
-i(70*size,[-50*size,-100*size],"#7fffd4",5,"turtle")
-M(70*size,[-150*size,-100*size],"#7fffd4",5)
 p(70*size,[-50*size,120*size],"#7fffd4",5)
 p(70*size,[10*size,120*size],"#7fffd4",5)
 r(70*size,[-130*size,0],"#7fffd4",5)
 t(70*size,[-100*size,0],"#7fffd4",5)
 y(70*size,[70*size,120*size],"#7fffd4",5)
 y(70*size,[130*size,0],"#7fffd4",5)
-
+'''
 wn.mainloop()
