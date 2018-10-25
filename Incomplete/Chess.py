@@ -73,7 +73,7 @@ class piece:
             return False
         
         if abs(self.type) == 1:
-            if self.type*movement[1] > 0 and abs(movement[0]) == 1 and abs(movement[1]) == 1 and board[target[1]][target[0]].type*self.type < 0:
+            if self.type*movement[1] > 0 and abs(movement[0]) == 1 and abs(movement[1]) == 1 and board[target[0]][target[1]].type*self.type < 0:
                 return True
             elif current[1] in [1,6]:
                 if movement[0] == 0 and self.type*movement[1] in [1,2]:
