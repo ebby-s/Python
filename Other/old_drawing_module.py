@@ -6,7 +6,7 @@ while not valid:
     print("""Choose a speed:
     1. For testing purposes only (90)
     2. Low quality (180)
-    3. Meh quality (360)
+    3. Medium quality (360)
     4. Good quality (720)
     5. Will be done by tomorrow, I think (1080)""")
     choice = input("Your choice: ")
@@ -43,9 +43,9 @@ while not valid:
         if 0 < choice < 5:
             valid = True
         else:
-            print("That isn't even an opition...")
+            print("That isn't an opition...")
     except ValueError:
-        print("Thats not a valid choice you gremlin...")
+        print("That is not a valid choice...")
 
 if choice == 1:
     size = 0.6
