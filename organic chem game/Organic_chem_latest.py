@@ -11,7 +11,7 @@ pygame.mouse.set_cursor(*pygame.cursors.diamond)
 screen = pygame.display.set_mode((1344,756))
 pygame.display.set_caption("Organic Chemistry")
 
-# Score object, evaluates score
+# Evaluates score
 class Score:
 
     def __init__(self):

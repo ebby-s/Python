@@ -3,11 +3,11 @@ class board:
     def __init__(self):
         '''A chess board'''
         self.convert = {0:"empty",1:"pawn",2:"castle",3:"knight",4:"bishop",5:"queen",6:"king"}
-        self.cols = [[] for x in range(8)]
+        self.cols = [[] for x in range(8)]                    # Makes chess board array
         for i in range(8):
             self.cols[i] = [piece(0) for x in range(8)]
 
-        for i,col in enumerate(self.cols):
+        for i,col in enumerate(self.cols):  # Fills array with pieces
             col[1] = piece(1)
             col[-2] = piece(-1)
             if i in [0,7]:
@@ -26,7 +26,7 @@ class board:
                 col[0] = piece(6)
                 col[-1] = piece(-6)
 
-    def show_board(self):
+    def show_board(self):                   # Prints out the board
         rows = [[] for x in range(8)]
         for col in self.cols:
             for j,piece in enumerate(col):
@@ -37,7 +37,7 @@ class board:
         for row in rows:
             print(row)
 
-    def move_piece(self,c_piece,target):
+    def move_piece(self,c_piece,target):                                    # Checks if the move is possible and checks if piece.move() is true
         if c_piece[0] not in range(8) or c_piece[1] not in range(8):
             return 'piece not on board'
         elif target[0] not in range(8) or target[1] not in range(8):
@@ -67,7 +67,7 @@ class piece:
     def __mul__(self,other):
         return self.type*other.type
 
-    def move(self,current,target,board):
+    def move(self,current,target,board):                              # Checks if the move obeys the rules
         movement = [target[0]-current[0],target[1]-current[1]]
         if abs(self.type) in [3,6] and not self.clear_path(current,movement,board):
             return False
@@ -98,7 +98,7 @@ class piece:
                 return True
         return False 
 
-    def clear_path(self,location,movement,board):
+    def clear_path(self,location,movement,board): # Checks if there is a clear path for the chess piece to move
         if movement[0] == 0:
             for y in range(movement[1]):
                 if board[location[0],location[1]+1+y].type*self.type == 1:

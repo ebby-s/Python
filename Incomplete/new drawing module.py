@@ -1,23 +1,34 @@
 import turtle
+import math
 
 colors = ["red","pink","violet","purple","blue","cyan","light green","yellow","orange"]
 screen = turtle.Screen()
 screen.bgcolor("black")
 
-def draw(color):
-    pencil = turtle.Turtle()
-    pencil.speed(100)
-    pencil.ht()
-    pencil.pencolor(color)
-    for i in range(45):
-        pencil.pendown()
-        pencil.forward(200)
-        pencil.right(30)
-        pencil.forward(80)
-        pencil.penup()
-        pencil.setpos([0,0])
-        pencil.seth(8*(1+i))
+def line(t,angle,length): # Draws a line with an angle using the turtle
+    t.right(angle)
+    t.forward(length)
+
+def draw(t,heading,length): # Draws a line with 3 parts from the center
+    t.setpos([0,0])
+    t.seth(heading)
+    t.pendown()
+    line(t,0,length)
+    line(t,30,length/4)
+    line(t,-30,length/2)
+    t.penup()
+
+def control(t):          # Draws lines from the center with a different angle each time, producing a circle
+    for i in range(90):
+        draw(t,4*i,160)
+
+
+        
 
 while __name__ == "__main__":
+    pencil = turtle.Turtle()
+    pencil.speed(0)
+    pencil.ht()
     for color in colors:
-        draw(color)
+        pencil.pencolor(color)
+        control(pencil)
