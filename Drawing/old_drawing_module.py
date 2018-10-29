@@ -1,6 +1,7 @@
 import turtle
 import math
 
+# Menu system
 valid = False
 while not valid:
     print("""Choose a speed:
@@ -32,7 +33,7 @@ elif choice == 5:
 
 valid = False
 while not valid:
-    print("""Choose a speed:
+    print("""Choose a size:
     1. Tiny (0.6)
     2. Small (0.8)
     3. Normal (1)
@@ -67,6 +68,7 @@ pen.speed(0)
 pencil.speed(0)
 turtle.bgcolor("#0060ff")
 
+# I wrote these a long time ago, no idea what the parameters mean or how they work, use new version in new_drawing_module
 def Flower(pos,size,thickness,colors,control=2.2,shape=32,density=720,shape2="narrow",number=5,angles=[30,30]):
     for j in range(number+1):
         pencil.seth(-360/number*j)
@@ -98,13 +100,15 @@ def Pattern(shape,pos,size,thickness,lcolors,depth=1,density=900,blobs=4,langles
         pencil.pendown()
     pencil.penup()
 
+# Function that affects the "radius" of the pattern
 def function(ival,blobs,shape):
     val = math.sin(ival/blobs*math.pi)
     if shape == "broad":
-        return 2*val-val**2
+        return 2*val-val**2   #   y = 2sin(x) - sin^2(x)
     else:
-        return val
+        return val      #     y = sin(x)
 
+# Setup for turtle before drawing
 def start(angle,pos,color,pensize):
     pen.penup()
     pen.setpos(pos)
@@ -113,6 +117,7 @@ def start(angle,pos,color,pensize):
     pen.pencolor(color)
     pen.pendown()
 
+# My alternative for drawing letters without the stamp function in the turtle module.
 def a(size,pos,color,pensize):
     pos = [pos[0],pos[1]+size*0.6]
     size = size*0.8
@@ -254,6 +259,7 @@ def y(size,pos,color,pensize):
         pen.forward(size*0.0105)
         pen.right(2)
 
+# Examples of how to use the Pattern and Flower functions
 Pattern("broad",[-20*size,40*size],250*size,1,["#0060ff","#dbd1b4","#3fe0d0"],0.25,1.5*time)
 Pattern("narrow",[380*size,290*size],65*size,1,["green","green","green"],6,time,3)
 Pattern("narrow",[-400*size,360*size],65*size,1,["green","green","green"],6,time,3)
@@ -261,6 +267,9 @@ Flower([380*size,290*size],50*size,1,["#3fe0d0","#7fffd4","white"],2.17,32,time,
 Flower([-420*size,-210*size],50*size,1,["yellow","orange","red"],2.17,32,time,"narrow",5,[30,30])
 Flower([360*size,-280*size],50*size,1,["magenta","#ff0024","darkred"],2.17,32,time,"broad",5,[30,30])
 Flower([-400*size,360*size],50*size,1,["#7fffd4","lightblue","white"],2.17,32,time,"broad",5,[30,30])
+
+# Do not use this bit, it just draws the letters "Happy birthday"
+'''
 a(70*size,[-100*size,120*size],"#7fffd4",5)
 a(70*size,[80*size,0],"#7fffd4",5)
 B(70*size,[-200*size,0],"#7fffd4",5)
@@ -274,5 +283,5 @@ r(70*size,[-130*size,0],"#7fffd4",5)
 t(70*size,[-100*size,0],"#7fffd4",5)
 y(70*size,[70*size,120*size],"#7fffd4",5)
 y(70*size,[130*size,0],"#7fffd4",5)
-
+'''
 wn.mainloop()
