@@ -1,4 +1,3 @@
-
 unsorted = [6,3,11,4,97,23,10,45,37,26,2,7,3]
 
 def insertion_sort(unsorted):
