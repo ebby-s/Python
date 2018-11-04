@@ -5,9 +5,9 @@ pygame.init()
 fpsClock=pygame.time.Clock()
 #pygame.key.set_repeat(10,10)
 global G
-G = 0.0001
+G = 0.001
 
-class particle:
+class Particle:
 
     def __init__(self,mass=100):
         """A massive object"""
@@ -25,6 +25,7 @@ class particle:
         pygame.draw.circle(screen,self.color,(int(self.x),int(self.y)),self.radius)
 
     def update(self):    # Update velocity and position of particle
+        self.radius = int(self.mass**(1/3))
         self.xvelocity += self.xforce/self.mass
         self.yvelocity += self.yforce/self.mass
         self.x += self.xvelocity
@@ -39,10 +40,10 @@ class particle:
                 magnitude = G*(self.mass*other.mass)/r**2
                 xmagnitude = (dx/r)*magnitude
                 ymagnitude = (dy/r)*magnitude
-                self.xvelocity += xmagnitude
-                self.yvelocity += ymagnitude
-                other.xvelocity -= xmagnitude
-                other.yvelocity -= ymagnitude
+                self.xvelocity += xmagnitude/self.mass
+                self.yvelocity += ymagnitude/self.mass
+                other.xvelocity -= xmagnitude/other.mass
+                other.yvelocity -= ymagnitude/other.mass
 
     def collide(self,other):    # Check if there is a collision
         r1 = self.radius
@@ -67,10 +68,30 @@ def border(particles):        # Bounce partieles off border at 80% initial veloc
         if particle.y >= 900 - r:
             particle.yvelocity = -abs(particle.yvelocity)*0.8
 
+def collision_detect(particles):
+    for particle in particles:
+        for other in particles:
+            if particle != other:
+                if particle.collide(other):
+                    xmomentum = particle.mass*particle.xvelocity + other.mass*other.xvelocity
+                    ymomentum = particle.mass*particle.yvelocity + other.mass*other.yvelocity
+                    mass = particle.mass + other.mass
+                    if particle.mass >= other.mass:
+                        particle.mass = mass
+                        particle.xvelocity = xmomentum/mass
+                        particle.yvelocity = ymomentum/mass
+                        del(particles[particles.index(other)])
+                    else:
+                        other.mass = mass
+                        other.xvelocity = xmomentum/mass
+                        other.yvelocity = ymomentum/mass
+                        del(particles[particles.index(particle)])
+                    
+
 screen=pygame.display.set_mode((1600,900),0,32)
 pygame.display.set_caption('FunForce')
 
-particles  = [particle() for i in range(5)]
+particles  = [Particle() for i in range(2)]
 for particle in particles:
     particle.x = random.randint(100,1500)
     particle.y = random.randint(100,800)
@@ -79,12 +100,18 @@ particles[1].color = (36,255,0)
 
 while True:
     screen.fill((0,0,0))
-    
+
+    while len(particles) < 20:
+        particles.append(Particle(random.randint(10,80)))
+        particles[-1].x = random.randint(100,1500)
+        particles[-1].y = random.randint(100,800)
+
     for particle in particles:
         particle.update()
         particle.draw(screen)
 
     border(particles)
+    collision_detect(particles)
 
     for particle in particles:
         particle.attract(particles)
