@@ -19,7 +19,7 @@ class particle:
         self.xforce = 0
         self.yforce = 0
         self.color = (255,0,36)
-        self.radius = int(self.mass**0.5)
+        self.radius = int(self.mass**(1/3))
 
     def draw(self,screen):    # Draw particle on screen
         pygame.draw.circle(screen,self.color,(int(self.x),int(self.y)),self.radius)
