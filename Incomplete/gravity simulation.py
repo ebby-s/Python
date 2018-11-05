@@ -119,7 +119,7 @@ particles[0].yvelocity = -0.08
 while True:
     screen.fill((0,0,0))
 
-    while len(particles) < 20:
+    while len(particles) < 30:
         particles.append(Particle(random.randint(40,min([particles[0].mass,particles[1].mass]))))
         particles[-1].x = random.randint(resolution[0]*0.1,resolution[0]*0.9)
         particles[-1].y = random.randint(resolution[1]*0.1,resolution[1]*0.9)
