@@ -5,7 +5,9 @@ pygame.init()
 fpsClock=pygame.time.Clock()
 #pygame.key.set_repeat(10,10)
 global G
+global resolution
 G = 0.001
+resolution = (1300,600)
 
 class Particle:
 
@@ -63,9 +65,9 @@ def border(particles):        # Bounce partieles off border at 80% initial veloc
             particle.xvelocity = abs(particle.xvelocity)*0.8
         if particle.y <= r:
             particle.yvelocity = abs(particle.yvelocity)*0.8
-        if particle.x >= 1600 - r:
+        if particle.x >= resolution[0] - r:
             particle.xvelocity = -abs(particle.xvelocity)*0.8
-        if particle.y >= 900 - r:
+        if particle.y >= resolution[1] - r:
             particle.yvelocity = -abs(particle.yvelocity)*0.8
 
 def collision_detect(particles):
@@ -80,31 +82,50 @@ def collision_detect(particles):
                         particle.mass = mass
                         particle.xvelocity = xmomentum/mass
                         particle.yvelocity = ymomentum/mass
+                        if particles.index(other) in [0,1]:
+                            particles.insert(particles.index(other)+1,Particle(100))
+                            particles[particles.index(other)+1].x = random.randint(resolution[0]*0.1,resolution[0]*0.9)
+                            particles[particles.index(other)+1].y = random.randint(resolution[1]*0.1,resolution[1]*0.9)
                         del(particles[particles.index(other)])
                     else:
                         other.mass = mass
                         other.xvelocity = xmomentum/mass
                         other.yvelocity = ymomentum/mass
+                        if particles.index(particle) in [0,1]:
+                            particles.insert(particles.index(particle)+1,Particle(100))
+                            particles[particles.index(particle)+1].x = random.randint(resolution[0]*0.1,resolution[0]*0.9)
+                            particles[particles.index(particle)+1].y = random.randint(resolution[1]*0.1,resolution[1]*0.9)
                         del(particles[particles.index(particle)])
                     
 
-screen=pygame.display.set_mode((1600,900),0,32)
-pygame.display.set_caption('FunForce')
+screen=pygame.display.set_mode(resolution,0,32)
 
 particles  = [Particle() for i in range(2)]
 for particle in particles:
-    particle.x = random.randint(100,1500)
-    particle.y = random.randint(100,800)
+    particle.x = random.randint(resolution[0]*0.1,resolution[0]*0.9)
+    particle.y = random.randint(resolution[1]*0.1,resolution[1]*0.9)
 particles[0].color = (0,36,255)
 particles[1].color = (36,255,0)
-
+'''
+particles[0].mass = 10000
+particles[1].mass = 2000
+particles[0].x = resolution[0]*0.5
+particles[0].y = resolution[1]*0.5
+particles[1].x = resolution[0]*0.5+100
+particles[1].y = resolution[1]*0.5
+particles[1].yvelocity = 0.42
+particles[0].yvelocity = -0.08
+'''
 while True:
     screen.fill((0,0,0))
 
     while len(particles) < 20:
-        particles.append(Particle(random.randint(10,80)))
-        particles[-1].x = random.randint(100,1500)
-        particles[-1].y = random.randint(100,800)
+        particles.append(Particle(random.randint(40,min([particles[0].mass,particles[1].mass]))))
+        particles[-1].x = random.randint(resolution[0]*0.1,resolution[0]*0.9)
+        particles[-1].y = random.randint(resolution[1]*0.1,resolution[1]*0.9)
+
+    particles[0].color = (0,36,255)
+    particles[1].color = (36,255,0)
 
     for particle in particles:
         particle.update()
