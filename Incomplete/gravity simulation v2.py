@@ -32,7 +32,6 @@ class Particle:
         self.pos[1] += self.velocity[1]
         self.mass = sum(self.contents)
         self.density = (1*self.contents[0]+0.2*self.contents[1])/self.mass
-        '''
         if self.mass < 1000:
             self.color = (150,150,140)
             self.density = 1
@@ -40,9 +39,8 @@ class Particle:
             self.color = (73,255,237)
             self.density = 0.5
         elif self.mass > 5000:
-            self.color = (20,20,20)
+            self.color = (50,50,50)
             self.density = 5
-        '''
 
     def attract(self,other):    # Calculate forces due to gravity from other particles
         dx = other.pos[0] - self.pos[0]
