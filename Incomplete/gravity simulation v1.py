@@ -7,7 +7,7 @@ fpsClock=pygame.time.Clock()
 global G
 global resolution
 G = 0.001
-resolution = (1300,600)
+resolution = (1600,900)
 
 class Particle:
 
@@ -106,6 +106,7 @@ for particle in particles:
     particle.y = random.randint(resolution[1]*0.1,resolution[1]*0.9)
 particles[0].color = (0,36,255)
 particles[1].color = (36,255,0)
+
 '''
 particles[0].mass = 10000
 particles[1].mass = 2000
@@ -116,6 +117,7 @@ particles[1].y = resolution[1]*0.5
 particles[1].yvelocity = 0.42
 particles[0].yvelocity = -0.08
 '''
+
 while True:
     screen.fill((0,0,0))
 
@@ -151,7 +153,7 @@ while True:
                 particles[0].yforce = -5
             elif (event.key == K_DOWN):
                 particles[0].yforce = 5
-            elif (event.key == K_a):
+            if (event.key == K_a):
                 particles[1].xforce = -5
             elif (event.key == K_d):
                 particles[1].xforce = 5
