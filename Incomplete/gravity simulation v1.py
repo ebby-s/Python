@@ -8,6 +8,7 @@ global G
 global resolution
 G = 0.001
 resolution = (1600,900)
+main_font = pygame.font.SysFont('Courier',18,True)
 
 class Particle:
 
@@ -71,8 +72,8 @@ def border(particles):        # Bounce partieles off border at 80% initial veloc
             particle.yvelocity = -abs(particle.yvelocity)*0.8
 
 def collision_detect(particles):
-    for particle in particles:
-        for other in particles:
+    for i,particle in enumerate(particles):
+        for other in particles[i+1:]:
             if particle != other:
                 if particle.collide(other):
                     xmomentum = particle.mass*particle.xvelocity + other.mass*other.xvelocity
@@ -96,7 +97,6 @@ def collision_detect(particles):
                             particles[particles.index(particle)+1].x = random.randint(resolution[0]*0.1,resolution[0]*0.9)
                             particles[particles.index(particle)+1].y = random.randint(resolution[1]*0.1,resolution[1]*0.9)
                         del(particles[particles.index(particle)])
-                    
 
 screen=pygame.display.set_mode(resolution,0,32)
 
@@ -121,7 +121,7 @@ particles[0].yvelocity = -0.08
 while True:
     screen.fill((0,0,0))
 
-    while len(particles) < 30:
+    while len(particles) < 100:
         particles.append(Particle(random.randint(40,min([particles[0].mass,particles[1].mass]))))
         particles[-1].x = random.randint(resolution[0]*0.1,resolution[0]*0.9)
         particles[-1].y = random.randint(resolution[1]*0.1,resolution[1]*0.9)
@@ -136,8 +136,11 @@ while True:
     border(particles)
     collision_detect(particles)
 
-    for particle in particles:
-        particle.attract(particles)
+    for i,particle in enumerate(particles):
+        particle.attract(particles[i+1:])
+
+    for i,text in enumerate(["Player 1 mass: "+str(particles[0].mass),"Player 2 mass: "+str(particles[1].mass)]):
+        screen.blit(main_font.render(text,True,(255,255,255)),(10,10+30*i))
 
     for event in pygame.event.get():
         if event.type == QUIT:
