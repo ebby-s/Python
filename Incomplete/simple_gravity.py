@@ -44,6 +44,28 @@ class Particle:
         r_total = r1 + r2
         dx = other.pos[0] - self.pos[0]
         dy = other.pos[1] - self.pos[1]
+        if dx**2 + dy**2 <= r_total**2:
+            xmomentum = self.mass*self.velocity[0] + other.mass*other.velocity[0]
+            ymomentum = self.mass*self.velocity[1] + other.mass*other.velocity[1]
+            mass = self.mass + other.mass
+            if self.mass >= other.mass:
+                self.mass = mass
+                self.velocity[0] = xmomentum/mass
+                self.velocity[1] = ymomentum/mass
+                del(particles[particles.index(other)])
+            else:
+                other.mass = mass
+                other.xvelocity = xmomentum/mass
+                other.yvelocity = ymomentum/mass
+                del(particles[particles.index(self)])
+
+'''
+    def collide(self,other):    # Check if there is a collision
+        r1 = self.radius
+        r2 = other.radius
+        r_total = r1 + r2
+        dx = other.pos[0] - self.pos[0]
+        dy = other.pos[1] - self.pos[1]
         if dx**2 + dy**2 > r_total**2:
             return False
         else:
@@ -60,6 +82,18 @@ def border(particles):        # Bounce partieles off border at 80% initial veloc
             particle.velocity[0] = -abs(particle.velocity[0])
         if particle.pos[1] >= resolution[1] - r:
             particle.velocity[1] = -abs(particle.velocity[1])
+'''
+
+def border(particle):        # Bounce partieles off border at 80% initial velocity
+    r = particle.radius
+    if particle.pos[0] <= r:
+        particle.velocity[0] = abs(particle.velocity[0])
+    if particle.pos[1] <= r:
+        particle.velocity[1] = abs(particle.velocity[1])
+    if particle.pos[0] >= resolution[0] - r:
+        particle.velocity[0] = -abs(particle.velocity[0])
+    if particle.pos[1] >= resolution[1] - r:
+        particle.velocity[1] = -abs(particle.velocity[1])
 
 def collision_detect(particles):
     for i,particle in enumerate(particles):
@@ -93,13 +127,17 @@ def start():
 while True:
     screen.fill((0,0,0))
 
+'''
     border(particles)
     collision_detect(particles)
+'''
 
     for i,particle in enumerate(particles):
         particle.update()
         particle.draw(screen)
+        border(particle)
         for other in particles[i+1:]:
+            particle.collide(other)
             particle.attract(other)
 
     for event in pygame.event.get():
