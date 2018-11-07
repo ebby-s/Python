@@ -6,8 +6,8 @@ fpsClock=pygame.time.Clock()
 #pygame.key.set_repeat(10,10)
 global G
 global resolution
-G = 0.001
-resolution = (1600,900)
+G = 0.002
+resolution = (1200,600)
 main_font = pygame.font.SysFont('Courier',18,True)
 
 class Particle:
@@ -107,7 +107,7 @@ for particle in particles:
 particles[0].color = (0,36,255)
 particles[1].color = (36,255,0)
 
-'''
+
 particles[0].mass = 10000
 particles[1].mass = 2000
 particles[0].x = resolution[0]*0.5
@@ -116,12 +116,12 @@ particles[1].x = resolution[0]*0.5+100
 particles[1].y = resolution[1]*0.5
 particles[1].yvelocity = 0.42
 particles[0].yvelocity = -0.08
-'''
+
 
 while True:
     screen.fill((0,0,0))
 
-    while len(particles) < 100:
+    while len(particles) < 2:
         particles.append(Particle(random.randint(40,min([particles[0].mass,particles[1].mass]))))
         particles[-1].x = random.randint(resolution[0]*0.1,resolution[0]*0.9)
         particles[-1].y = random.randint(resolution[1]*0.1,resolution[1]*0.9)

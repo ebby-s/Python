@@ -13,7 +13,6 @@ class Particle:
         self.mass = mass
         self.pos = [800,450]
         self.velocity = [0,0]
-        self.force = [0,0]
         self.color = (255,255,255)
         self.radius = round(2*self.mass**(1/3))
 
@@ -21,8 +20,6 @@ class Particle:
         pygame.draw.circle(screen,self.color,(int(self.pos[0]),int(self.pos[1])),self.radius)
 
     def update(self):    # Update characteristics of particle
-        self.velocity[0] += self.force[0]/self.mass
-        self.velocity[1] += self.force[1]/self.mass
         self.pos[0] += self.velocity[0]
         self.pos[1] += self.velocity[1]
 
@@ -72,24 +69,6 @@ def border(particle):        # Bounce partieles off border
     elif particle.pos[1] >= resolution[1] - r:
         particle.velocity[1] = -abs(particle.velocity[1])
 
-def collision_detect(particles):
-    for i,particle in enumerate(particles):
-        for other in particles[i+1:]:
-            if particle.collide(other):
-                xmomentum = particle.mass*particle.velocity[0] + other.mass*other.velocity[0]
-                ymomentum = particle.mass*particle.velocity[1] + other.mass*other.velocity[1]
-                mass = particle.mass + other.mass
-                if particle.mass >= other.mass:
-                    particle.mass = mass
-                    particle.velocity[0] = xmomentum/mass
-                    particle.velocity[1] = ymomentum/mass
-                    del(particles[particles.index(other)])
-                else:
-                    other.mass = mass
-                    other.xvelocity = xmomentum/mass
-                    other.yvelocity = ymomentum/mass
-                    del(particles[particles.index(particle)])
-
 def start():
     screen = pygame.display.set_mode(resolution,0,32)
 
@@ -106,8 +85,8 @@ while True:
 
     for i,particle in enumerate(particles):
         particle.update()
-        particle.draw(screen)
         border(particle)
+        particle.draw(screen)
         for other in particles[i+1:]:
             particle.collide(other)
             particle.attract(other)
