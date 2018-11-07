@@ -1,10 +1,11 @@
-import pygame, random
+import pygame, random, time
 from pygame.locals import *
 pygame.init()
+fpsClock=pygame.time.Clock()
 global G
 global resolution
 G = 1
-resolution = (1600,900)
+resolution = (1200,600)
 
 class Particle:
     
@@ -20,7 +21,6 @@ class Particle:
         pygame.draw.circle(screen,self.color,(int(self.pos[0]),int(self.pos[1])),self.radius)
 
     def update(self):    # Update characteristics of particle
-        self.radius = round(2*self.mass**(1/3))
         self.velocity[0] += self.force[0]/self.mass
         self.velocity[1] += self.force[1]/self.mass
         self.pos[0] += self.velocity[0]
@@ -52,47 +52,24 @@ class Particle:
                 self.mass = mass
                 self.velocity[0] = xmomentum/mass
                 self.velocity[1] = ymomentum/mass
+                self.radius = round(2*self.mass**(1/3))
                 del(particles[particles.index(other)])
             else:
                 other.mass = mass
                 other.xvelocity = xmomentum/mass
                 other.yvelocity = ymomentum/mass
+                other.radius = round(2*other.mass**(1/3))
                 del(particles[particles.index(self)])
 
-'''
-    def collide(self,other):    # Check if there is a collision
-        r1 = self.radius
-        r2 = other.radius
-        r_total = r1 + r2
-        dx = other.pos[0] - self.pos[0]
-        dy = other.pos[1] - self.pos[1]
-        if dx**2 + dy**2 > r_total**2:
-            return False
-        else:
-            return True
-
-def border(particles):        # Bounce partieles off border at 80% initial velocity
-    for particle in particles:
-        r = particle.radius
-        if particle.pos[0] <= r:
-            particle.velocity[0] = abs(particle.velocity[0])
-        if particle.pos[1] <= r:
-            particle.velocity[1] = abs(particle.velocity[1])
-        if particle.pos[0] >= resolution[0] - r:
-            particle.velocity[0] = -abs(particle.velocity[0])
-        if particle.pos[1] >= resolution[1] - r:
-            particle.velocity[1] = -abs(particle.velocity[1])
-'''
-
-def border(particle):        # Bounce partieles off border at 80% initial velocity
+def border(particle):        # Bounce partieles off border
     r = particle.radius
     if particle.pos[0] <= r:
         particle.velocity[0] = abs(particle.velocity[0])
-    if particle.pos[1] <= r:
+    elif particle.pos[1] <= r:
         particle.velocity[1] = abs(particle.velocity[1])
-    if particle.pos[0] >= resolution[0] - r:
+    elif particle.pos[0] >= resolution[0] - r:
         particle.velocity[0] = -abs(particle.velocity[0])
-    if particle.pos[1] >= resolution[1] - r:
+    elif particle.pos[1] >= resolution[1] - r:
         particle.velocity[1] = -abs(particle.velocity[1])
 
 def collision_detect(particles):
@@ -127,11 +104,6 @@ def start():
 while True:
     screen.fill((0,0,0))
 
-'''
-    border(particles)
-    collision_detect(particles)
-'''
-
     for i,particle in enumerate(particles):
         particle.update()
         particle.draw(screen)
@@ -152,33 +124,6 @@ while True:
                 [screen,particles] = start()
     
     pygame.display.update()
+    fpsClock.tick(60)
 
-'''
-while True:
-    screen.fill((0,0,0))
 
-    for particle in particles:
-        particle.update()
-        particle.draw(screen)
-
-    border(particles)
-    collision_detect(particles)
-
-    for i,particle in enumerate(particles):
-        for other in particles[i+1:]:
-            particle.attract(other)
-
-    for event in pygame.event.get():
-        if event.type == QUIT:
-            pygame.quit()
-            sys.exit()
-        elif event.type == KEYDOWN:
-            if   event.key == K_ESCAPE:
-                pygame.quit()
-                sys.exit()
-            elif event.key == K_r:
-                [screen,particles] = start()
-
-    pygame.display.update()
-    fpsClock.tick(120)
-'''
