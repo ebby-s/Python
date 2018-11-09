@@ -22,6 +22,13 @@ class Tree:             # Node for building trees
     def __str__(self):
         return str(self.cargo)
 
+def root(number,exponent):
+    return number**(1/exponent)
+
+def shorten(equation):
+    for term in equation:
+        if "x" in term: return term
+
 def print_tree(tree):            # Prints tree, for debugging
     if tree is None: return
     print_tree(tree.left)
@@ -61,13 +68,31 @@ def evaluate(token_list):           # Simplies by evaluating postfix
                 stack.push(str(operand1)+token+str(operand2))
         else:
             stack.push(token)
-    return stack
+    return stack.items
+
+def solve_for_x(equation):      # Solves for x when two sides of equation are passed to it. Note the stealthy TV show reference
+    operators = {"+":operator.sub,"-":operator.add,"*":operator.truediv,"^":root}
+    for side in equation:
+        if side == "=": continue
+        elif "x" in str(side): LHS = side
+        else: RHS = float(side)
+
+    for op in list(operators.keys()):
+        if op in LHS:
+            LHS = LHS.split(op)
+            for term in LHS:
+                try:
+                    RHS = operators[op](RHS,float(term))
+                except:
+                    continue
+            LHS = shorten(LHS)
+    return RHS
 
 # SUVAT equations as trees
 no_s = Tree("=",Tree("v"),Tree("+",Tree("u"),Tree("*",Tree("a"),Tree("t")))) # v = u + a * t
 no_u = Tree("=",Tree("s"),Tree("-", Tree("*",Tree("v"),Tree("t")), Tree("*",Tree("*",Tree(0.5),Tree("a")),Tree("^",Tree("t"),Tree(2))))) # s = vt - 0.5*at^2
 no_v = Tree("=",Tree("s"),Tree("+", Tree("*",Tree("u"),Tree("t")), Tree("*",Tree("*",Tree(0.5),Tree("a")),Tree("^",Tree("t"),Tree(2))))) # s = ut + 0.5*at^2
-no_a = Tree("=",Tree("v"),Tree("*",Tree("*",Tree(0.5),Tree("t")),Tree("+",Tree("u"),Tree("v")))) # v = 0.5*(u+v)t
+no_a = Tree("=",Tree("s"),Tree("*",Tree("*",Tree(0.5),Tree("t")),Tree("+",Tree("u"),Tree("v")))) # v = 0.5*(u+v)t
 no_t = Tree("=",Tree("^",Tree("v"),Tree(2)),Tree("+",Tree("^",Tree("u"),Tree(2)),Tree("*",Tree("*",Tree("a"),Tree("s")),Tree(2)))) # v^2 = u^2 + 2as
 
 equations = {"s":no_s,"u":no_u,"v":no_v,"a":no_a,"t":no_t}
@@ -84,14 +109,18 @@ def choose_equation(values):      # Chooses an equation depending on values pres
     return equations[list(values.keys())[list(values.values()).index(None)]]
 
 
-
 values = input_values()
 equation = choose_equation(values)
+print_tree(equation)
+print()
 equation = add_numbers(equation,values)
 print_tree(equation)
+print()
 postfix = ''
 tree_to_postfix(equation)
 print(postfix)
 simplified = evaluate(postfix.split())
-while not simplified.is_empty():
-    print(simplified.pop())
+print(simplified)
+print()
+x = solve_for_x(simplified)
+print(x)
