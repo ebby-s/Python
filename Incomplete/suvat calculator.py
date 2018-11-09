@@ -64,11 +64,11 @@ def evaluate(token_list):           # Simplies by evaluating postfix
     return stack
 
 # SUVAT equations as trees
-no_s = Tree("=",Tree("v"),Tree("+",Tree("u"),Tree("*",Tree("a"),Tree("t"))))
-no_u = Tree("=",Tree("s"),Tree("-", Tree("*",Tree("v"),Tree("t")), Tree("*",Tree("*",Tree(0.5),Tree("a")),Tree("^",Tree("t"),Tree(2)))))
-no_v = Tree("=",Tree("s"),Tree("+", Tree("*",Tree("u"),Tree("t")), Tree("*",Tree("*",Tree(0.5),Tree("a")),Tree("^",Tree("t"),Tree(2)))))
-no_a = Tree("=",Tree("v"),Tree("*",Tree("*",Tree(0.5),Tree("t")),Tree("+",Tree("u"),Tree("v"))))
-no_t = Tree("=",Tree("^",Tree("v"),Tree(2)),Tree("+",Tree("^",Tree("u"),Tree(2)),Tree("*",Tree("*",Tree("a"),Tree("s")),Tree(2))))
+no_s = Tree("=",Tree("v"),Tree("+",Tree("u"),Tree("*",Tree("a"),Tree("t")))) # v = u + a * t
+no_u = Tree("=",Tree("s"),Tree("-", Tree("*",Tree("v"),Tree("t")), Tree("*",Tree("*",Tree(0.5),Tree("a")),Tree("^",Tree("t"),Tree(2))))) # s = vt - 0.5*at^2
+no_v = Tree("=",Tree("s"),Tree("+", Tree("*",Tree("u"),Tree("t")), Tree("*",Tree("*",Tree(0.5),Tree("a")),Tree("^",Tree("t"),Tree(2))))) # s = ut + 0.5*at^2
+no_a = Tree("=",Tree("v"),Tree("*",Tree("*",Tree(0.5),Tree("t")),Tree("+",Tree("u"),Tree("v")))) # v = 0.5*(u+v)t
+no_t = Tree("=",Tree("^",Tree("v"),Tree(2)),Tree("+",Tree("^",Tree("u"),Tree(2)),Tree("*",Tree("*",Tree("a"),Tree("s")),Tree(2)))) # v^2 = u^2 + 2as
 
 equations = {"s":no_s,"u":no_u,"v":no_v,"a":no_a,"t":no_t}
 
