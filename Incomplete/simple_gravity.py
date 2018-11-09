@@ -5,7 +5,7 @@ fpsClock=pygame.time.Clock()
 global G
 global resolution
 G = 1
-resolution = (1600,900)
+resolution = (1200,600)
 
 # Good seeds, with initial particles and mass: [[3584879356604460687,8,25],[8741169891298822318,100,1],[183252150040625239,8,25]]
 
@@ -79,7 +79,9 @@ def infinity_border(particle):        # Particles teleport to the other side of 
     elif particle.pos[1] >= resolution[1] - r:
         particle.pos[1] = r + 1
 
-def start(seed=random.randrange(sys.maxsize)):
+def start(seed=None):
+    if seed == None:
+        seed = random.randrange(sys.maxsize)
     random.seed(seed)
     print("Seed was:", seed)
     screen = pygame.display.set_mode(resolution,0,32)
@@ -115,6 +117,6 @@ while True:
                 [screen,particles] = start()
     
     pygame.display.update()
-    #fpsClock.tick(90)
+    fpsClock.tick(90)
 
 
