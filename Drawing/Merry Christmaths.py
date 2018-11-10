@@ -2,6 +2,8 @@ import turtle
 import math
 import numpy
 
+# This program randomly generates and draws christmas trees
+
 pen = turtle.Turtle()
 pencil = turtle.Turtle()
 pencil.penup()

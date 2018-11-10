@@ -89,11 +89,11 @@ def solve_for_x(equation):      # Solves for x when two sides of equation are pa
     return RHS
 
 # SUVAT equations as trees
-no_s = Tree("=",Tree("v"),Tree("+",Tree("u"),Tree("*",Tree("a"),Tree("t")))) # v = u + a * t
+no_s = Tree("=",Tree("v"),Tree("+",Tree("u"),Tree("*",Tree("a"),Tree("t"))))                                                             # v = u + a * t
 no_u = Tree("=",Tree("s"),Tree("-", Tree("*",Tree("v"),Tree("t")), Tree("*",Tree("*",Tree(0.5),Tree("a")),Tree("^",Tree("t"),Tree(2))))) # s = vt - 0.5*at^2
 no_v = Tree("=",Tree("s"),Tree("+", Tree("*",Tree("u"),Tree("t")), Tree("*",Tree("*",Tree(0.5),Tree("a")),Tree("^",Tree("t"),Tree(2))))) # s = ut + 0.5*at^2
-no_a = Tree("=",Tree("s"),Tree("*",Tree("*",Tree(0.5),Tree("t")),Tree("+",Tree("u"),Tree("v")))) # v = 0.5*(u+v)t
-no_t = Tree("=",Tree("^",Tree("v"),Tree(2)),Tree("+",Tree("^",Tree("u"),Tree(2)),Tree("*",Tree("*",Tree("a"),Tree("s")),Tree(2)))) # v^2 = u^2 + 2as
+no_a = Tree("=",Tree("s"),Tree("*",Tree("*",Tree(0.5),Tree("t")),Tree("+",Tree("u"),Tree("v"))))                                         # v = 0.5*(u+v)t
+no_t = Tree("=",Tree("^",Tree("v"),Tree(2)),Tree("+",Tree("^",Tree("u"),Tree(2)),Tree("*",Tree("*",Tree("a"),Tree("s")),Tree(2))))       # v^2 = u^2 + 2as
 
 equations = {"s":no_s,"u":no_u,"v":no_v,"a":no_a,"t":no_t}
 
@@ -106,10 +106,17 @@ def input_values():     # Inputs values for suvat, x is the value to be found
     return inputs
 
 def choose_equation(values):      # Chooses an equation depending on values present
-    return equations[list(values.keys())[list(values.values()).index(None)]]
+    if None in values.values():
+        return equations[list(values.keys())[list(values.values()).index(None)]]
+    else:
+        "nothing rn"
 
 
 values = input_values()
+while "x" not in values.values():
+    print("You need to enter 'x' for the value you want to calculate")
+    values = input_values()
+
 equation = choose_equation(values)
 print_tree(equation)
 print()

@@ -1,7 +1,7 @@
 import tkinter
 from tkinter import *
 window = tkinter.Tk()
-window.wm_title("Calculator")
+window.wm_title("Calculator with better layout")
 M = int(0)
 S = ""
 V1 = "0"
