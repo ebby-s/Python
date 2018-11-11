@@ -1,11 +1,14 @@
 import pygame, random, time, sys
 from pygame.locals import *
 pygame.init()
+icon = pygame.image.load('g_logo.png')
+pygame.display.set_caption("Gravity Simulator")
+pygame.display.set_icon(icon)
 fpsClock=pygame.time.Clock()
 global G
 global resolution
 G = 1
-resolution = (1200,600)
+resolution = (1600,900)
 
 # Good seeds, with initial particles and mass: [[3584879356604460687,8,25],[8741169891298822318,100,1],[183252150040625239,8,25]]
 
@@ -86,7 +89,7 @@ def start(seed=None):
     print("Seed was:", seed)
     screen = pygame.display.set_mode(resolution,0,32)
 
-    particles  = [Particle(25) for i in range(8)]
+    particles  = [Particle(1) for i in range(100)]
     for particle in particles:
         particle.pos[0] = random.randint(resolution[0]*0.01,resolution[0]*0.99)
         particle.pos[1] = random.randint(resolution[1]*0.01,resolution[1]*0.99)
@@ -100,6 +103,7 @@ while True:
     for i,particle in enumerate(particles):
         particle.update()
         particle.draw(screen)
+        bounce_border(particle)
         for other in particles[i+1:]:
             particle.collide(other)
         for other in particles[i+1:]:
