@@ -8,7 +8,7 @@ fpsClock=pygame.time.Clock()
 global G
 global resolution
 G = 1
-resolution = (1600,900)
+resolution = (1200,600)
 
 # Good seeds, with initial particles and mass: [[3584879356604460687,8,25],[8741169891298822318,100,1],[183252150040625239,8,25]]
 
