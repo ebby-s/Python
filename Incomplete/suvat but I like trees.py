@@ -19,6 +19,13 @@ class Tree:             # Node for building trees
     def __str__(self):
         return str(self.cargo)
 
+def is_float(value):
+    try:
+        value = float(value)
+        return True
+    except:
+        return False
+
 def root(number,exponent):
     return number**(1/exponent)
 
@@ -56,6 +63,23 @@ def substitute(tree,value):        # Substitutes value for all instances of vari
     if tree.cargo == value[0] and value[1] != None: tree.cargo = value[1]
     return tree
 
+def contains_x(tree):                    # Checks if x is in branch
+    if tree.cargo == "x": return True
+    if tree.right != None:
+        if contains_x(tree.right): return True
+    if tree.left != None:
+        if contains_x(tree.left): return True
+    return False
+
+def simplify(tree):                                             # Solves some of the tree                   VALUES ARE AT THE LEAVES, USE THIS NEXT TIME
+    operators = {"+":operator.add,"-":operator.sub,"*":operator.mul,"^":operator.pow}
+    if tree.left != None and tree.right != None:
+        if is_float(tree.right.cargo) and is_float(tree.left.cargo):
+            return Tree(operators[self.cargo](tree.left.cargo,tree.right.cargo))
+    if tree.right.cargo != None: tree.cargo = simplify(tree.right)
+    if tree.left.cargo != None: tree.cargo = simplify(tree.left)
+    return tree
+
 def tree_to_postfix(tree):     # Converts tree to postfix to solve
     global postfix
     if tree is None: return
@@ -75,7 +99,7 @@ def evaluate(token_list):           # Simplies by evaluating postfix
         else: stack.push(token)
     return stack.items
 
-def solve_for_x(equation):      # Solves for x when two sides of equation are passed to it. Note the stealthy TV show reference
+def solve_for_x(equation):      # Solves for x when two sides of equation are passed to it
     operators = {"+":operator.sub,"-":operator.add,"*":operator.truediv,"^":root}
     for side in equation:
         if side == "=": continue
@@ -120,6 +144,12 @@ print()
 equation = add_numbers(equation,values)
 print_tree(equation)
 print()
+print(contains_x(equation.left),contains_x(equation.right))
+if not contains_x(equation.left):
+    print(simplify(equation.left))
+if not contains_x(equation.right):
+    print(simplify(equation.right))
+
 postfix = ''
 tree_to_postfix(equation)
 print(postfix)
