@@ -38,7 +38,13 @@ def print_tree(tree):            # Prints tree, for debugging
     print_tree(tree.left)
     print(tree.cargo, end=" ")
     print_tree(tree.right)
-
+'''
+def print_tree(tree,level=0):            # Prints tree indented, for debugging
+    if tree is None: return
+    print_tree(tree.right,level+1)
+    print("  "*level+str(tree.cargo))
+    print_tree(tree.left,level+1)
+'''
 def input_values():     # Inputs values for suvat, x is the value to be found
     inputs = {"s":None,"u":None,"v":None,"a":None,"t":None}
     for key in inputs.keys():
@@ -71,13 +77,15 @@ def contains_x(tree):                    # Checks if x is in branch
         if contains_x(tree.left): return True
     return False
 
-def simplify(tree):                                             # Solves some of the tree                   VALUES ARE AT THE LEAVES, USE THIS NEXT TIME
+def simplify(tree):                   # Solves some of the tree                            VALUES ARE AT THE LEAVES, USE THIS NEXT TIME
     operators = {"+":operator.add,"-":operator.sub,"*":operator.mul,"^":operator.pow}
     if tree.left != None and tree.right != None:
         if is_float(tree.right.cargo) and is_float(tree.left.cargo):
-            return Tree(operators[self.cargo](tree.left.cargo,tree.right.cargo))
-    if tree.right.cargo != None: tree.cargo = simplify(tree.right)
-    if tree.left.cargo != None: tree.cargo = simplify(tree.left)
+            tree.cargo = operators[tree.cargo](float(tree.left.cargo),float(tree.right.cargo))
+            tree.left = None
+            tree.right = None
+    if tree.right != None: tree.right = simplify(tree.right)
+    if tree.left != None: tree.left = simplify(tree.left)
     return tree
 
 def tree_to_postfix(tree):     # Converts tree to postfix to solve
@@ -145,11 +153,11 @@ equation = add_numbers(equation,values)
 print_tree(equation)
 print()
 print(contains_x(equation.left),contains_x(equation.right))
-if not contains_x(equation.left):
-    print(simplify(equation.left))
-if not contains_x(equation.right):
-    print(simplify(equation.right))
 
+print_tree(simplify(equation.left))
+print_tree(simplify(equation.right))
+
+'''
 postfix = ''
 tree_to_postfix(equation)
 print(postfix)
@@ -158,3 +166,4 @@ print(simplified)
 print()
 simplified = remove_brackets(simplified)
 print(simplified)
+'''
