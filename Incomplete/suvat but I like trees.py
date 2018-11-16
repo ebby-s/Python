@@ -1,15 +1,5 @@
 import operator
 # This program is for entertainment purposes only, do not try at home.
- 
-class Stack:                 # Stack for evaluating postfix
-    def __init__(self):
-        self.items = []
-    def push(self, item):
-        self.items.append(item)
-    def pop(self):
-        return self.items.pop()
-    def is_empty(self):
-        return (self.items == [])
 
 class Tree:             # Node for building trees
     def __init__(self, cargo, left=None, right=None):
@@ -19,32 +9,22 @@ class Tree:             # Node for building trees
     def __str__(self):
         return str(self.cargo)
 
-def is_float(value):
+def is_float(value):           # Returns true if value can be converted to float
     try:
         value = float(value)
         return True
     except:
         return False
 
-def root(number,exponent):
+def root(number,exponent):           # Returns root of value
     return number**(1/exponent)
-
-def shorten(equation):
-    for term in equation:
-        if "x" in term: return term
 
 def print_tree(tree):            # Prints tree, for debugging
     if tree is None: return
     print_tree(tree.left)
     print(tree.cargo, end=" ")
     print_tree(tree.right)
-'''
-def print_tree(tree,level=0):            # Prints tree indented, for debugging
-    if tree is None: return
-    print_tree(tree.right,level+1)
-    print("  "*level+str(tree.cargo))
-    print_tree(tree.left,level+1)
-'''
+
 def input_values():     # Inputs values for suvat, x is the value to be found
     inputs = {"s":None,"u":None,"v":None,"a":None,"t":None}
     for key in inputs.keys():
@@ -77,7 +57,7 @@ def contains_x(tree):                    # Checks if x is in branch
         if contains_x(tree.left): return True
     return False
 
-def simplify(tree):                   # Solves some of the tree                            VALUES ARE AT THE LEAVES, USE THIS NEXT TIME
+def simplify(tree):                   # Solves some of the tree                            POLYNOMIALS???
     operators = {"+":operator.add,"-":operator.sub,"*":operator.mul,"^":operator.pow}
     if tree.left != None and tree.right != None:
         if is_float(tree.right.cargo) and is_float(tree.left.cargo):
@@ -87,50 +67,6 @@ def simplify(tree):                   # Solves some of the tree                 
     if tree.right != None: tree.right = simplify(tree.right)
     if tree.left != None: tree.left = simplify(tree.left)
     return tree
-
-def tree_to_postfix(tree):     # Converts tree to postfix to solve
-    global postfix
-    if tree is None: return
-    tree_to_postfix(tree.left)
-    tree_to_postfix(tree.right)
-    postfix += str(tree.cargo)+' '
-
-def evaluate(token_list):           # Simplies by evaluating postfix
-    stack = Stack()
-    operators = {"+":operator.add,"-":operator.sub,"*":operator.mul,"^":operator.pow}
-    for token in token_list:
-        if token in operators.keys():
-            operand2 = stack.pop()
-            operand1 = stack.pop()
-            try: stack.push(operators[token](float(operand1),float(operand2)))
-            except: stack.push("("+str(operand1)+token+str(operand2)+")")
-        else: stack.push(token)
-    return stack.items
-
-def solve_for_x(equation):      # Solves for x when two sides of equation are passed to it
-    operators = {"+":operator.sub,"-":operator.add,"*":operator.truediv,"^":root}
-    for side in equation:
-        if side == "=": continue
-        elif "x" in str(side): LHS = side
-        else: RHS = float(side)
-
-    for op in list(operators.keys()):
-        if op in LHS:
-            LHS = LHS.split(op)
-            for term in LHS:
-                try: RHS = operators[op](RHS,float(term))
-                except: continue
-            LHS = shorten(LHS)
-    return RHS
-
-def remove_brackets(equation):
-    for i in range(len(equation)):
-        print(equation[i])
-        equation[i] = equation[i].replace("("," ")
-        equation[i] = equation[i].replace(")"," ")
-        equation[i] = equation[i].split(" ")
-        print(equation[i])
-    return equation
 
 # SUVAT equations as trees
 no_s = Tree("=",Tree("v"),Tree("+",Tree("u"),Tree("*",Tree("a"),Tree("t"))))                                                             # v = u + a * t
@@ -157,13 +93,5 @@ print(contains_x(equation.left),contains_x(equation.right))
 print_tree(simplify(equation.left))
 print_tree(simplify(equation.right))
 
-'''
-postfix = ''
-tree_to_postfix(equation)
-print(postfix)
-simplified = evaluate(postfix.split())
-print(simplified)
-print()
-simplified = remove_brackets(simplified)
-print(simplified)
-'''
+
+
