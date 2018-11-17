@@ -8,6 +8,8 @@ class Tree:             # Node for building trees
         self.right = right
     def __str__(self):
         return str(self.cargo)
+    def __int__(self):
+        return int(self.cargo)
 
 def is_float(value):           # Returns true if value can be converted to float
     try:
@@ -68,9 +70,18 @@ def simplify(tree):                   # Solves some of the tree                 
     if tree.left != None: tree.left = simplify(tree.left)
     return tree
 
+def orders(tree):                 # makes a list of the coefficients of increasing powers of x and solves
+    if tree.cargo == "^":
+        if is_float(tree.right): return int(tree.right)
+        else: return int(tree.left)
+    if tree.right != None:
+        if orders(tree.right) != None: ordered[orders(tree.right)] += int(tree.left)
+    if tree.left != None:
+        if orders(tree.left) != None: ordered[orders(tree.left)] += int(tree.right)
+
 # SUVAT equations as trees
 no_s = Tree("=",Tree("v"),Tree("+",Tree("u"),Tree("*",Tree("a"),Tree("t"))))                                                             # v = u + a * t
-no_u = Tree("=",Tree("s"),Tree("-", Tree("*",Tree("v"),Tree("t")), Tree("*",Tree("*",Tree(0.5),Tree("a")),Tree("^",Tree("t"),Tree(2))))) # s = vt - 0.5*at^2
+no_u = Tree("=",Tree("s"),Tree("+", Tree("*",Tree("v"),Tree("t")), Tree("*",Tree("*",Tree(-0.5),Tree("a")),Tree("^",Tree("t"),Tree(2))))) # s = vt - 0.5*at^2
 no_v = Tree("=",Tree("s"),Tree("+", Tree("*",Tree("u"),Tree("t")), Tree("*",Tree("*",Tree(0.5),Tree("a")),Tree("^",Tree("t"),Tree(2))))) # s = ut + 0.5*at^2
 no_a = Tree("=",Tree("s"),Tree("*",Tree("*",Tree(0.5),Tree("t")),Tree("+",Tree("u"),Tree("v"))))                                         # s = 0.5*(u+v)t
 no_t = Tree("=",Tree("^",Tree("v"),Tree(2)),Tree("+",Tree("^",Tree("u"),Tree(2)),Tree("*",Tree("*",Tree("a"),Tree("s")),Tree(2))))       # v^2 = u^2 + 2as
@@ -91,7 +102,14 @@ print()
 print(contains_x(equation.left),contains_x(equation.right))
 
 print_tree(simplify(equation.left))
+print("=",end='')
 print_tree(simplify(equation.right))
+print()
 
-
+global ordered
+ordered = [0,0,0,0,0]
+orders(equation.right)
+print(ordered)
+orders(equation.left)
+print(ordered)
 
