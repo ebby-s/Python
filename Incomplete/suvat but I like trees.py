@@ -1,5 +1,5 @@
 import operator
-# Yes there are simpler solutions but I LIKE TREES.
+# Yes there are simpler solutions BUT I LIKE TREES.
 
 class Tree:             # Node for building trees
     def __init__(self, cargo, left=None, right=None):
@@ -59,25 +59,63 @@ def contains_x(tree):                    # Checks if x is in branch
         if contains_x(tree.left): return True
     return False
 
-def simplify(tree):                   # Solves some of the tree                            POLYNOMIALS???
+def simplify(tree):                   # Solves some of the tree
     operators = {"+":operator.add,"-":operator.sub,"*":operator.mul,"^":operator.pow}
     if tree.left != None and tree.right != None:
         if is_float(tree.right.cargo) and is_float(tree.left.cargo):
             tree.cargo = operators[tree.cargo](float(tree.left.cargo),float(tree.right.cargo))
             tree.left = None
             tree.right = None
+        if tree.cargo == "*" and tree.right.cargo == "*" and is_float(tree.left.cargo):
+            if is_float(tree.right.right.cargo):
+                tree.left.cargo = float(tree.left.cargo)*float(tree.right.right.cargo)
+                tree.right = tree.right.left
+            elif is_float(tree.right.left.cargo):
+                tree.left.cargo = float(tree.left.cargo)*float(tree.right.left.cargo)
+                tree.right = tree.right.right
+        elif tree.cargo == "*" and tree.left.cargo == "*" and is_float(tree.right.cargo):
+            if is_float(tree.left.right.cargo):
+                tree.right.cargo = float(tree.right.cargo)*float(tree.left.right.cargo)
+                tree.left = tree.left.left
+            elif is_float(tree.left.left.cargo):
+                tree.right.cargo = float(tree.right.cargo)*float(tree.left.left.cargo)
+                tree.left = tree.left.right
     if tree.right != None: tree.right = simplify(tree.right)
     if tree.left != None: tree.left = simplify(tree.left)
     return tree
 
-def orders(tree):                 # makes a list of the coefficients of increasing powers of x and solves
+def orders(tree,test=False,first=False):                 # makes a list of the coefficients of increasing powers of x
+    if tree == None: return
+    
+    if tree.cargo in ["+","="] and not test:
+        if is_float(tree.left.cargo): ordered[0] += float(tree.left.cargo)
+        elif is_float(tree.right.cargo): ordered[0] += float(tree.right.cargo)
+    if is_float(tree.cargo) and first: ordered[0] += float(tree.cargo)
+    
+    if tree.right == None or tree.left == None: return
     if tree.cargo == "^":
-        if is_float(tree.right): return int(tree.right)
-        else: return int(tree.left)
-    if tree.right != None:
-        if orders(tree.right) != None: ordered[orders(tree.right)] += int(tree.left)
-    if tree.left != None:
-        if orders(tree.left) != None: ordered[orders(tree.left)] += int(tree.right)
+        if is_float(tree.right.cargo): return int(tree.right.cargo)
+        else: return int(tree.left.cargo)
+    if is_float(tree.left.cargo) and orders(tree.right,True) != None:
+        ordered[orders(tree.right)] += float(tree.left.cargo)
+    if is_float(tree.right.cargo) and orders(tree.left,True) != None:
+        ordered[orders(tree.left)] += float(tree.right.cargo)
+    if tree.cargo == "*" and not test:
+        if tree.left.cargo == "x": ordered[1] += float(tree.right.cargo)
+        elif tree.right.cargo == "x": ordered[1] += float(tree.left.cargo)
+    orders(tree.left)
+    orders(tree.right)
+
+def solve(orders):          # Solves the final equation which is in the form ax**3 + bx**2 + cx + d = 0.
+    if orders[3] != 0:
+        "solve cubic"
+    elif orders[2] != 0:
+        [c,b,a] = orders[:3]
+        sol1 = (-b+(b**2 - 4*a*c)**0.5)/(2*a)
+        sol2 = (-b-(b**2 - 4*a*c)**0.5)/(2*a)
+        return [sol1,sol2]
+    else:
+        return -orders[0]/orders[1]
 
 # SUVAT equations as trees
 no_s = Tree("=",Tree("v"),Tree("+",Tree("u"),Tree("*",Tree("a"),Tree("t"))))                                                             # v = u + a * t
@@ -107,9 +145,18 @@ print_tree(simplify(equation.right))
 print()
 
 global ordered
-ordered = [0,0,0,0,0]
-orders(equation.right)
-print(ordered)
-orders(equation.left)
-print(ordered)
+ordered = [0,0,0,0]
+orders(equation.left,first=True)
+ordered,left_orders = [0,0,0,0],ordered
+orders(equation.right,first=True)
+ordered,right_orders = [0,0,0,0,0],ordered
+print(left_orders,right_orders)
+
+total_orders = [0,0,0,0]
+for i in range(4):
+    total_orders[i] += right_orders[i] - left_orders[i]
+print(total_orders)
+
+print(solve(total_orders))
+
 
