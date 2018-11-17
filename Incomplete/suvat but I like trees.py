@@ -1,4 +1,4 @@
-import operator
+import operator,copy
 # Yes there are simpler solutions BUT I LIKE TREES.
 
 class Tree:             # Node for building trees
@@ -37,7 +37,7 @@ def input_values():     # Inputs values for suvat, x is the value to be found
 
 def choose_equation(values):      # Chooses an equation depending on values present
     if None in values.values():
-        return equations[list(values.keys())[list(values.values()).index(None)]]
+        return copy.deepcopy(equations[list(values.keys())[list(values.values()).index(None)]])
 
 def add_numbers(equation,values):     # Substitutes values into equation
     for key in values.keys():
@@ -114,49 +114,90 @@ def solve(orders):          # Solves the final equation which is in the form ax*
         sol1 = (-b+(b**2 - 4*a*c)**0.5)/(2*a)
         sol2 = (-b-(b**2 - 4*a*c)**0.5)/(2*a)
         return [sol1,sol2]
-    else:
+    elif orders[1] != 0:
         return -orders[0]/orders[1]
+    else:
+        return orders[0]
 
 # SUVAT equations as trees
 no_s = Tree("=",Tree("v"),Tree("+",Tree("u"),Tree("*",Tree("a"),Tree("t"))))                                                             # v = u + a * t
 no_u = Tree("=",Tree("s"),Tree("+", Tree("*",Tree("v"),Tree("t")), Tree("*",Tree("*",Tree(-0.5),Tree("a")),Tree("^",Tree("t"),Tree(2))))) # s = vt - 0.5*at^2
 no_v = Tree("=",Tree("s"),Tree("+", Tree("*",Tree("u"),Tree("t")), Tree("*",Tree("*",Tree(0.5),Tree("a")),Tree("^",Tree("t"),Tree(2))))) # s = ut + 0.5*at^2
 no_a = Tree("=",Tree("s"),Tree("*",Tree("*",Tree(0.5),Tree("t")),Tree("+",Tree("u"),Tree("v"))))                                         # s = 0.5*(u+v)t
-no_t = Tree("=",Tree("^",Tree("v"),Tree(2)),Tree("+",Tree("^",Tree("u"),Tree(2)),Tree("*",Tree("*",Tree("a"),Tree("s")),Tree(2))))       # v^2 = u^2 + 2as
+no_t = Tree("=",Tree("*",Tree("^",Tree("v"),Tree(2)),Tree(1)),Tree("+",Tree("^",Tree("u"),Tree(2)),Tree("*",Tree("*",Tree("a"),Tree("s")),Tree(2))))       # v^2 = u^2 + 2as
 
 equations = {"s":no_s,"u":no_u,"v":no_v,"a":no_a,"t":no_t}
 
-values = input_values()
-while "x" not in values.values():
-    print("You need to enter 'x' for the value you want to calculate")
+'''
+while True:
     values = input_values()
+    while "x" not in values.values():
+        print("You need to enter 'x' for the value you want to calculate")
+        values = input_values()
 
-equation = choose_equation(values)
-print_tree(equation)
-print()
-equation = add_numbers(equation,values)
-print_tree(equation)
-print()
-print(contains_x(equation.left),contains_x(equation.right))
+    equation = choose_equation(values)
+    print_tree(equation)
+    print()
+    equation = add_numbers(equation,values)
+    print_tree(equation)
+    print()
+    print(contains_x(equation.left),contains_x(equation.right))
 
-print_tree(simplify(equation.left))
-print("=",end='')
-print_tree(simplify(equation.right))
-print()
+    simplify(equation.left)
+    simplify(equation.right)
+    print_tree(equation)
+    print()
+    simplify(equation.left)
+    simplify(equation.right)
+    print_tree(equation)
+    print()
+    simplify(equation.left)
+    simplify(equation.right)
+    print_tree(equation)
+    print()
 
-global ordered
-ordered = [0,0,0,0]
-orders(equation.left,first=True)
-ordered,left_orders = [0,0,0,0],ordered
-orders(equation.right,first=True)
-ordered,right_orders = [0,0,0,0,0],ordered
-print(left_orders,right_orders)
+    global ordered
+    ordered = [0,0,0,0]
+    orders(equation.left,first=True)
+    ordered,left_orders = [0,0,0,0],ordered
+    orders(equation.right,first=True)
+    ordered,right_orders = [0,0,0,0,0],ordered
+    print(left_orders,right_orders)
+    total_orders = [0,0,0,0]
+    for i in range(4):
+        total_orders[i] += right_orders[i] - left_orders[i]
+    print(total_orders)
+    print(solve(total_orders))
+'''
 
-total_orders = [0,0,0,0]
-for i in range(4):
-    total_orders[i] += right_orders[i] - left_orders[i]
-print(total_orders)
+while True:
+    values = input_values()
+    while "x" not in values.values():
+        print("You need to enter 'x' for the value you want to calculate")
+        values = input_values()
+    equation = choose_equation(values)
+    equation = add_numbers(equation,values)
 
-print(solve(total_orders))
+    simplify(equation.left)
+    simplify(equation.right)
+    simplify(equation.left)
+    simplify(equation.right)
+    simplify(equation.left)
+    simplify(equation.right)
+
+    global ordered
+    ordered = [0,0,0,0]
+    orders(equation.left,first=True)
+    ordered,left_orders = [0,0,0,0],ordered
+    orders(equation.right,first=True)
+    ordered,right_orders = [0,0,0,0,0],ordered
+    total_orders = [0,0,0,0]
+    for i in range(4):
+        total_orders[i] += right_orders[i] - left_orders[i]
+    print(solve(total_orders))
+
+
+
+
 
 
