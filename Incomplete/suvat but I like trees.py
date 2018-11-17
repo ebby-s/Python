@@ -1,5 +1,5 @@
 import operator
-# This program is for entertainment purposes only, do not try at home.
+# Yes there are simpler solutions but I LIKE TREES.
 
 class Tree:             # Node for building trees
     def __init__(self, cargo, left=None, right=None):
