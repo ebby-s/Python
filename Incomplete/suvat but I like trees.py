@@ -28,11 +28,39 @@ def print_tree(tree):            # Prints tree, for debugging
     print_tree(tree.right)
 
 def input_values():     # Inputs values for suvat, x is the value to be found
-    inputs = {"s":None,"u":None,"v":None,"a":None,"t":None}
-    for key in inputs.keys():
-        value = str(input("Input value for {0}(or x to find): ".format(key)))
-        if value == '': value = None
-        inputs[key] = value
+    while True:
+        inputs = {"s":None,"u":None,"v":None,"a":None,"t":None}
+        for key in inputs.keys():
+            value = str(input("Input value for {0}(or x to find): ".format(key)))
+            if value == '': value = None
+            inputs[key] = value
+        if "x" in inputs.values():
+            return inputs
+        else:
+            print("Invalid values entered")
+
+def input_bulk():                 # Inputs a lot of values :D
+    while True:
+        try:
+            repeats = int(input("Enter number of repeats: "))
+            if repeats > 0: break
+            else: print("Value has to be positive.")
+        except: print("Value has to be an integer.")
+    
+    constants = input_values()
+    inputs = [copy.deepcopy(constants) for x in range(repeats)]
+    while True:
+        variable = input("Enter variable: ")
+        if variable in list('suvat'): break
+        else: print("Variable has to be s,u,v,a, or t.")
+    values = []
+    while len(values) < repeats:
+        try:
+            value = float(input("Enter a value: "))
+            values.append(value)
+        except: print("Value has to be a float.")
+    for i,value in enumerate(values):
+        inputs[i][variable] = value
     return inputs
 
 def choose_equation(values):      # Chooses an equation depending on values present
@@ -119,21 +147,48 @@ def solve(orders):          # Solves the final equation which is in the form ax*
     else:
         return orders[0]
 
+def calculate(values):    # Uses suvat to calculate the missing value.
+    print(values)
+    equation = choose_equation(values)
+    equation = add_numbers(equation,values)
+    simplify(equation.left)
+    simplify(equation.right)
+    simplify(equation.left)
+    simplify(equation.right)
+    simplify(equation.left)
+    simplify(equation.right)
+    global ordered
+    ordered = [0,0,0,0]
+    orders(equation.left,first=True)
+    ordered,left_orders = [0,0,0,0],ordered
+    orders(equation.right,first=True)
+    ordered,right_orders = [0,0,0,0,0],ordered
+    total_orders = [0,0,0,0]
+    for i in range(4):
+        total_orders[i] += right_orders[i] - left_orders[i]
+    print(solve(total_orders))
+
 # SUVAT equations as trees
-no_s = Tree("=",Tree("v"),Tree("+",Tree("u"),Tree("*",Tree("a"),Tree("t"))))                                                             # v = u + a * t
-no_u = Tree("=",Tree("s"),Tree("+", Tree("*",Tree("v"),Tree("t")), Tree("*",Tree("*",Tree(-0.5),Tree("a")),Tree("^",Tree("t"),Tree(2))))) # s = vt - 0.5*at^2
-no_v = Tree("=",Tree("s"),Tree("+", Tree("*",Tree("u"),Tree("t")), Tree("*",Tree("*",Tree(0.5),Tree("a")),Tree("^",Tree("t"),Tree(2))))) # s = ut + 0.5*at^2
-no_a = Tree("=",Tree("s"),Tree("*",Tree("*",Tree(0.5),Tree("t")),Tree("+",Tree("u"),Tree("v"))))                                         # s = 0.5*(u+v)t
-no_t = Tree("=",Tree("*",Tree("^",Tree("v"),Tree(2)),Tree(1)),Tree("+",Tree("^",Tree("u"),Tree(2)),Tree("*",Tree("*",Tree("a"),Tree("s")),Tree(2))))       # v^2 = u^2 + 2as
+no_s = Tree("=",Tree("v"),Tree("+",Tree("u"),Tree("*",Tree("a"),Tree("t"))))                                                                           # v = u + a * t
+no_u = Tree("=",Tree("s"),Tree("+", Tree("*",Tree("v"),Tree("t")), Tree("*",Tree("*",Tree(-0.5),Tree("a")),Tree("^",Tree("t"),Tree(2)))))              # s = vt - 0.5*at^2
+no_v = Tree("=",Tree("s"),Tree("+", Tree("*",Tree("u"),Tree("t")), Tree("*",Tree("*",Tree(0.5),Tree("a")),Tree("^",Tree("t"),Tree(2)))))               # s = ut + 0.5*at^2
+no_a = Tree("=",Tree("s"),Tree("*",Tree("*",Tree(0.5),Tree("t")),Tree("+",Tree("u"),Tree("v"))))                                                       # s = 0.5*(u+v)t
+no_t = Tree("=",Tree("*",Tree("^",Tree("v"),Tree(2)),Tree(1)),Tree("+",Tree("^",Tree("u"),Tree(2)),Tree("*",Tree("*",Tree("a"),Tree("s")),Tree(2))))   # v^2 = u^2 + 2as
 
 equations = {"s":no_s,"u":no_u,"v":no_v,"a":no_a,"t":no_t}
 
+
+
+inputs = input_bulk()
+for input in inputs:
+    calculate(input)
+
+
+
+# This code is for debugging, it prints out working.
 '''
 while True:
     values = input_values()
-    while "x" not in values.values():
-        print("You need to enter 'x' for the value you want to calculate")
-        values = input_values()
 
     equation = choose_equation(values)
     print_tree(equation)
@@ -169,33 +224,6 @@ while True:
     print(total_orders)
     print(solve(total_orders))
 '''
-
-while True:
-    values = input_values()
-    while "x" not in values.values():
-        print("You need to enter 'x' for the value you want to calculate")
-        values = input_values()
-    equation = choose_equation(values)
-    equation = add_numbers(equation,values)
-
-    simplify(equation.left)
-    simplify(equation.right)
-    simplify(equation.left)
-    simplify(equation.right)
-    simplify(equation.left)
-    simplify(equation.right)
-
-    global ordered
-    ordered = [0,0,0,0]
-    orders(equation.left,first=True)
-    ordered,left_orders = [0,0,0,0],ordered
-    orders(equation.right,first=True)
-    ordered,right_orders = [0,0,0,0,0],ordered
-    total_orders = [0,0,0,0]
-    for i in range(4):
-        total_orders[i] += right_orders[i] - left_orders[i]
-    print(solve(total_orders))
-
 
 
 
