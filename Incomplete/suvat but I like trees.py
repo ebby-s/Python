@@ -179,11 +179,11 @@ equations = {"s":no_s,"u":no_u,"v":no_v,"a":no_a,"t":no_t}
 
 
 while True:
-    print('''
+    print("""
 This is the menu -------------------
 1. Solve one question
 2. Solve a lot of questions
-3. Exit''')
+3. Exit""")
     while True:
         try:
             choice = int(input("Enter a choice: "))
