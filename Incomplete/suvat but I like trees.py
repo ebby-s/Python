@@ -178,11 +178,24 @@ no_t = Tree("=",Tree("*",Tree("^",Tree("v"),Tree(2)),Tree(1)),Tree("+",Tree("^",
 equations = {"s":no_s,"u":no_u,"v":no_v,"a":no_a,"t":no_t}
 
 
-
-inputs = input_bulk()
-for input in inputs:
-    calculate(input)
-
+while True:
+    print('''
+This is the menu -------------------
+1. Solve one question
+2. Solve a lot of questions
+3. Exit''')
+    while True:
+        try:
+            choice = int(input("Enter a choice: "))
+            if choice in [1,2,3]: break
+            else: print("Invalid choice.")
+        except: print("Invalid choice.")
+    if choice == 1: calculate(input_values())
+    elif choice == 2:
+        inputs = input_bulk()
+        for values in inputs:
+            calculate(values)
+    elif choice == 3: exit()
 
 
 # This code is for debugging, it prints out working.
