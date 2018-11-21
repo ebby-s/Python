@@ -95,7 +95,7 @@ def start(seed=None):
         particle.pos[1] = random.randint(resolution[1]*0.01,resolution[1]*0.99)
     return [screen,particles]
 
-[screen,particles] = start()
+[screen,particles] = start(1482578203)
 
 while True:
     screen.fill((0,0,0))
