@@ -121,18 +121,24 @@ def orders(tree,test=False,first=False):                 # makes a list of the c
     if is_float(tree.cargo) and first: ordered[0] += float(tree.cargo)
     
     if tree.right == None or tree.left == None: return
+    
     if tree.cargo == "^":
         if is_float(tree.right.cargo): return int(tree.right.cargo)
         else: return int(tree.left.cargo)
-    if is_float(tree.left.cargo) and orders(tree.right,True) != None:
+    if is_float(tree.left.cargo) and orders(tree.right,True) != None and tree.cargo == '*' and not test:
         ordered[orders(tree.right)] += float(tree.left.cargo)
-    if is_float(tree.right.cargo) and orders(tree.left,True) != None:
+    if is_float(tree.right.cargo) and orders(tree.left,True) != None and tree.cargo == '*' and not test:
         ordered[orders(tree.left)] += float(tree.right.cargo)
+        print(float(tree.right.cargo))
+    
     if tree.cargo == "*" and not test:
         if tree.left.cargo == "x": ordered[1] += float(tree.right.cargo)
         elif tree.right.cargo == "x": ordered[1] += float(tree.left.cargo)
+    
     orders(tree.left)
     orders(tree.right)
+    print_tree(tree)
+    print()
 
 def solve(orders):          # Solves the final equation which is in the form ax**3 + bx**2 + cx + d = 0.
     if orders[3] != 0:
@@ -173,7 +179,7 @@ no_s = Tree("=",Tree("v"),Tree("+",Tree("u"),Tree("*",Tree("a"),Tree("t"))))    
 no_u = Tree("=",Tree("s"),Tree("+", Tree("*",Tree("v"),Tree("t")), Tree("*",Tree("*",Tree(-0.5),Tree("a")),Tree("^",Tree("t"),Tree(2)))))              # s = vt - 0.5*at^2
 no_v = Tree("=",Tree("s"),Tree("+", Tree("*",Tree("u"),Tree("t")), Tree("*",Tree("*",Tree(0.5),Tree("a")),Tree("^",Tree("t"),Tree(2)))))               # s = ut + 0.5*at^2
 no_a = Tree("=",Tree("s"),Tree("*",Tree("*",Tree(0.5),Tree("t")),Tree("+",Tree("u"),Tree("v"))))                                                       # s = 0.5*(u+v)t
-no_t = Tree("=",Tree("*",Tree("^",Tree("v"),Tree(2)),Tree(1)),Tree("+",Tree("^",Tree("u"),Tree(2)),Tree("*",Tree("*",Tree("a"),Tree("s")),Tree(2))))   # v^2 = u^2 + 2as
+no_t = Tree("=",Tree("*",Tree("^",Tree("v"),Tree(2)),Tree(1)),Tree("+",Tree("*",Tree("^",Tree("u"),Tree(2)),Tree(1)),Tree("*",Tree("*",Tree("a"),Tree("s")),Tree(2))))   # v^2 = u^2 + 2as
 
 equations = {"s":no_s,"u":no_u,"v":no_v,"a":no_a,"t":no_t}
 
