@@ -129,7 +129,6 @@ def orders(tree,test=False,first=False):                 # makes a list of the c
         ordered[orders(tree.right)] += float(tree.left.cargo)
     if is_float(tree.right.cargo) and orders(tree.left,True) != None and tree.cargo == '*' and not test:
         ordered[orders(tree.left)] += float(tree.right.cargo)
-        print(float(tree.right.cargo))
     
     if tree.cargo == "*" and not test:
         if tree.left.cargo == "x": ordered[1] += float(tree.right.cargo)
@@ -137,8 +136,6 @@ def orders(tree,test=False,first=False):                 # makes a list of the c
     
     orders(tree.left)
     orders(tree.right)
-    print_tree(tree)
-    print()
 
 def solve(orders):          # Solves the final equation which is in the form ax**3 + bx**2 + cx + d = 0.
     if orders[3] != 0:
