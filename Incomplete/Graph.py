@@ -56,7 +56,7 @@ students.data = [18355,15770,21550,17545,9580]
 students.range = [0,25000]
 students.label = "students"
 
-plot('',fees,students)
+plot('',other,fees)
 
 X = [1,2,3,4,5]
 Y = [146628,147088,197808,212200,224280]
