@@ -1,15 +1,38 @@
-unsorted = [6,3,11,4,97,23,10,45,37,26,2,7,3]
+import datetime,random
 
-def insertion_sort(unsorted):
-    for i in range(1,len(unsorted)):    # Goes through list, starting from the second value
-        CurrentValue = unsorted[i]
-        for pos in range(len(unsorted)):       # Compares the current value to each element in the list
-            if CurrentValue > unsorted[pos]:
-                continue
-            else:                           # Insert the value into the list
-                del(unsorted[i])
-                unsorted.insert(pos,CurrentValue)
+def sort(array):
+    for i,CurrentValue in enumerate(array[1:]):
+        for pos,elem in enumerate(array):
+            if elem >= CurrentValue:
+                del(array[i+1])
+                array.insert(pos,CurrentValue)
                 break
-    return unsorted
+    return array
 
-sort = insertion_sort(unsorted)
+def checked_sort(array):
+    for i,CurrentValue in enumerate(array[1:]):
+        for pos,elem in enumerate(array):
+            if elem >= CurrentValue:
+                del(array[i+1])
+                array.insert(pos,CurrentValue)
+                break
+        if is_sorted(array): break
+    return array
+
+def is_sorted(array):
+    for i in range(len(array)):
+        if len(array)-1 == i: break
+        elif array[i] > array[i+1]: return False
+    return True
+
+def test(sort):
+    unsorted = [random.randint(0,255) for x in range(20)]
+    start = datetime.datetime.now()
+    sort(unsorted)
+    end = datetime.datetime.now()
+    return (end-start).microseconds
+
+
+times = [test(sort) for x in range(20000)]
+avg = sum(times)/len(times)
+print(avg)
