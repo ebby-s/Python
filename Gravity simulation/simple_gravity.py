@@ -10,7 +10,7 @@ global resolution
 G = 1
 resolution = (1200,600)
 
-# Good seeds, with initial particles and mass: [[3584879356604460687,8,25],[8741169891298822318,100,1],[183252150040625239,8,25]]
+# Good seeds, with initial particles and mass: [[3584879356604460687,8,25],[8741169891298822318,100,1],[183252150040625239,8,25],1482578203]
 
 class Particle:
     
@@ -95,7 +95,7 @@ def start(seed=None):
         particle.pos[1] = random.randint(resolution[1]*0.01,resolution[1]*0.99)
     return [screen,particles]
 
-[screen,particles] = start(1482578203)
+[screen,particles] = start()
 
 while True:
     screen.fill((0,0,0))
